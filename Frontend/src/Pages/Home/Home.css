@@ -1,0 +1,147 @@
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* HERO SECTION */
+.hero-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  background-color: white;
+  margin-top: 5vh;
+}
+
+.hero-section-cta-wrapper {
+  position: absolute;
+  bottom: 5vh;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 15rem;
+  height: 8rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.hero-section-cta-wrapper span {
+  font-size: 1.5rem;
+  color: black;
+}
+
+.hero-section-cta-wrapper button {
+  width: 8rem;
+  height: 2.5rem;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 0;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+/* WOMAN SECTION */
+.woman-section {
+  width: 100%;
+  height: 70vh;
+  background-color: black;
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5rem;
+}
+
+.woman-product-promo {
+  width: 20%;
+  height: 80%;
+  background-color: white;
+  color: black;
+}
+
+/* MEN SECTION */
+.men-section {
+  width: 100%;
+  height: 100vh;
+  background-color: white;
+  color: black;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.men-cta-wrapper {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+
+  width: 15rem;
+  height: 8rem;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.men-cta-wrapper span {
+  font-size: 1.5rem;
+  color: black;
+}
+
+.men-cta-wrapper button {
+  width: 8rem;
+  height: 2.5rem;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 0;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+/* NEW ARRIVAL SECTION */
+.new-arrival-section {
+  width: 100%;
+  height: 70vh;
+  background-color: black;
+  color: white;
+  gap: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.new-arrival-product-promo {
+  width: 20%;
+  height: 80%;
+  background-color: white;
+  color: black;
+}
