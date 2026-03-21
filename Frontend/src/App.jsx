@@ -6,6 +6,7 @@ import Login from "./Pages/Login/Login.jsx";
 import Register from "./Pages/Register/Register.jsx";
 import Men from "./Pages/Men/Men.jsx";
 import Woman from "./Pages/Woman/Woman.jsx";
+import Saved from "./Pages/Saved/Saved.jsx";
 //IMPORTED COMPONENTS//
 import Footer from "./Components/Footer/Footer.jsx";
 import GenderNav from "./Components/GenderNav/GenderNav.jsx";
@@ -17,6 +18,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/saved" element={<Saved />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
