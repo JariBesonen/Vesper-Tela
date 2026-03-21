@@ -4,7 +4,7 @@ function Navbar() {
         <nav>
             <ul className="ul-left">
                 <li><a href="/men">Men</a></li>
-                <li><a href="/woman">Woman</a></li>
+                <li><a href="/women">Woman</a></li>
             </ul>
             <h1>Vesper Tela</h1>
             <ul className="ul-right">
