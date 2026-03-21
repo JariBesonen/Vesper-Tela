@@ -6,7 +6,7 @@ function Navbar() {
                 <li><a href="/men">Men</a></li>
                 <li><a href="/women">Woman</a></li>
             </ul>
-            <h1>Vesper Tela</h1>
+            <h1><a href="/">Vesper Tela</a></h1>
             <ul className="ul-right">
                 <li><a href="/cart">Cart</a></li>
                 <li><a href="/saved">Saved</a></li>

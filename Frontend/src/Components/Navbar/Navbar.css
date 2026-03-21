@@ -9,12 +9,13 @@ nav {
   justify-content: space-around;
   background-color: rgb(199, 199, 199);
 }
-h1 {
+h1 a {
     color: black;
     font-size: 2rem;
+    text-decoration: none;
 }
 
-h1:hover {
+h1 a:hover {
     cursor: pointer;
 }
 
