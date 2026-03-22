@@ -9,7 +9,7 @@ import Woman from "./Pages/Woman/Woman.jsx";
 import Saved from "./Pages/Saved/Saved.jsx";
 //IMPORTED COMPONENTS//
 import Footer from "./Components/Footer/Footer.jsx";
-import GenderNav from "./Components/GenderNav/GenderNav.jsx";
+import CategoryNav from "./Components/CategoryNav/CategoryNav.jsx";
 import Navbar from "./Components/Navbar/Navbar.jsx";
 import Search from "./Components/Search/Search.jsx";
 function App() {
@@ -27,7 +27,7 @@ function App() {
       </Routes>
       <Footer />
       <Search />
-      <GenderNav />
+      <CategoryNav />
     </Router>
   );
 }
