@@ -1,6 +1,14 @@
 import "./Navbar.css";
 import Logout from "../Logout/Logout.jsx";
+import { useState } from "react";
 function Navbar() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  function handleTemporaryFunctionality(e) {
+    e.preventDefault();
+    setIsLoggedIn(true);
+  }
+
   return (
     <nav>
       <ul className="ul-left">
@@ -21,7 +29,20 @@ function Navbar() {
         <li>
           <a href="/saved">Saved</a>
         </li>
-        <li><Logout /></li>
+        {isLoggedIn ? (
+          <li>
+            <Logout />
+          </li>
+        ) : (
+          <li>
+            <button
+              onClick={handleTemporaryFunctionality}
+              className="login-btn"
+            >
+              LOGIN
+            </button>
+          </li>
+        )}
       </ul>
     </nav>
   );

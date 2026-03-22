@@ -36,3 +36,14 @@ nav ul li a:hover {
     cursor: pointer;
     color: black;
 }
+
+.login-btn {
+    width: 5rem;
+  padding: 0.2rem;
+    background-color: white;
+  
+}
+
+.login-btn:hover {
+    cursor: pointer;
+}
