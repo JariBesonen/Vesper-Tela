@@ -26,9 +26,33 @@ function Register() {
       return;
     }
 
-    console.log("Registering user:", formData);
+    // send registration data to backend
+    (async () => {
+      try {
+        const res = await fetch("http://localhost:3000/api/auth/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            username: formData.username,
+            email: formData.email,
+            password: formData.password,
+          }),
+        });
 
-    // later you can send this to your backend with fetch()
+        const data = await res.json();
+
+        if (!res.ok) {
+          alert(data.error || "Registration failed");
+          return;
+        }
+
+        alert("Account created successfully");
+        window.location.href = "/login";
+      } catch (err) {
+        console.error("Registration error:", err);
+        alert("Registration failed");
+      }
+    })();
   };
 
   return (

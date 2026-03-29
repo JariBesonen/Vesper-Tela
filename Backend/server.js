@@ -6,8 +6,6 @@ const app = express();
 const helmet = require("helmet");
 const cors = require("cors");
 
-
-
 app.disable("x-powered-by");
 
 // -----------------------------
@@ -20,9 +18,9 @@ app.use(express.urlencoded({ extended: true }));
 // 2. CORS (must come BEFORE Helmet)
 // -----------------------------
 const allowedOrigins = [
-  "http://localhost:5173"
-//   "https://thepalewitch.com",
-//   "https://www.thepalewitch.com",
+  "http://localhost:5173",
+  //   "https://thepalewitch.com",
+  //   "https://www.thepalewitch.com",
 ];
 
 const corsOptions = {
@@ -55,7 +53,7 @@ app.use(
     contentSecurityPolicy: false,
     crossOriginResourcePolicy: { policy: "cross-origin" },
     crossOriginOpenerPolicy: false,
-  })
+  }),
 );
 
 // -----------------------------
@@ -76,11 +74,14 @@ app.get("/api/test-db", async (req, res) => {
 
 // ROUTES
 
-
 // Health check
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok" });
 });
+
+// Auth routes
+const authRoutes = require("./routes/authRoutes");
+app.use("/api/auth", authRoutes);
 
 // -----------------------------
 // 5. Start Server
