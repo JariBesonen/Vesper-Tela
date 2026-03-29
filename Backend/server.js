@@ -61,7 +61,7 @@ app.use(
 // -----------------------------
 // 4. Database + Routes
 // -----------------------------
-const pool = require("./db");
+const pool = require("./config/db");
 
 // Test DB route
 app.get("/api/test-db", async (req, res) => {
@@ -87,5 +87,5 @@ app.get("/api/health", (req, res) => {
 // -----------------------------
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Server is listening on port ${PORT}`);
+  console.log(`Server is listening on port http://localhost:${PORT}`);
 });
