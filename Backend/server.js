@@ -6,6 +6,9 @@ const app = express();
 const helmet = require("helmet");
 const cors = require("cors");
 
+// Session middleware (must come after CORS, before routes)
+const sessionMiddleware = require("./middleware/session");
+
 app.disable("x-powered-by");
 
 // -----------------------------
@@ -38,9 +41,11 @@ const corsOptions = {
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
   optionsSuccessStatus: 204,
+  credentials: true, // <-- allow credentials (cookies)
 };
 
 app.use(cors(corsOptions));
+app.use(sessionMiddleware);
 
 // NOTE: DO NOT add `app.options("*", ...)` here.
 // Your cors middleware above already handles preflight.
