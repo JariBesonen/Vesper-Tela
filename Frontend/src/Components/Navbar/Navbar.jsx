@@ -1,12 +1,23 @@
 import "./Navbar.css";
 import Logout from "../Logout/Logout.jsx";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 function Navbar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  function handleTemporaryFunctionality(e) {
+  // Check session on mount
+  useEffect(() => {
+    fetch("http://localhost:3000/api/auth/session", {
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((data) => setIsLoggedIn(data.loggedIn))
+      .catch(() => setIsLoggedIn(false));
+  }, []);
+
+  // Handler for login (redirect to login page)
+  function handleLogin(e) {
     e.preventDefault();
-    setIsLoggedIn(true);
+    window.location.href = "/login";
   }
 
   return (
@@ -31,14 +42,11 @@ function Navbar() {
         </li>
         {isLoggedIn ? (
           <li>
-            <Logout />
+            <Logout onLogout={() => setIsLoggedIn(false)} />
           </li>
         ) : (
           <li>
-            <button
-              onClick={handleTemporaryFunctionality}
-              className="login-btn"
-            >
+            <button onClick={handleLogin} className="login-btn">
               LOGIN
             </button>
           </li>

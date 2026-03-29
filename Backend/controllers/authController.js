@@ -1,3 +1,20 @@
+exports.session = (req, res) => {
+  if (req.session && req.session.userId) {
+    res.json({ loggedIn: true, username: req.session.username });
+  } else {
+    res.json({ loggedIn: false });
+  }
+};
+exports.logout = (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error("LOGOUT ERROR:", err);
+      return res.status(500).json({ error: "Logout failed" });
+    }
+    res.clearCookie("connect.sid"); // default cookie name for express-session
+    res.json({ message: "Logged out" });
+  });
+};
 exports.login = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
