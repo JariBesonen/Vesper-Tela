@@ -12,6 +12,7 @@ import Footer from "./Components/Footer/Footer.jsx";
 import CategoryNav from "./Components/CategoryNav/CategoryNav.jsx";
 import Navbar from "./Components/Navbar/Navbar.jsx";
 import Search from "./Components/Search/Search.jsx";
+import "./Global.css";
 function App() {
   return (
     <Router>
