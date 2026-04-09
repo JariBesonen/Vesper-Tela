@@ -88,6 +88,10 @@ app.get("/api/health", (req, res) => {
 const authRoutes = require("./routes/authRoutes");
 app.use("/api/auth", authRoutes);
 
+// Product routes
+const productRoutes = require("./routes/productRoutes");
+app.use("/api/products", productRoutes);
+
 // -----------------------------
 // 5. Start Server
 // -----------------------------
