@@ -3,20 +3,32 @@ import "./Woman.css";
 
 function Woman() {
   const [products, setProducts] = useState([]);
+  const [savedIds, setSavedIds] = useState(new Set());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    async function fetchProducts() {
+    async function fetchData() {
       try {
-        const response = await fetch(
+        // Fetch products
+        const productResponse = await fetch(
           "http://localhost:3000/api/products?category=women",
         );
-        if (!response.ok) {
-          throw new Error(`Failed to load products: ${response.status}`);
+        if (!productResponse.ok) {
+          throw new Error(`Failed to load products: ${productResponse.status}`);
         }
-        const data = await response.json();
-        setProducts(data || []);
+        const productData = await productResponse.json();
+        setProducts(productData || []);
+
+        // Fetch saved products
+        const savedResponse = await fetch("http://localhost:3000/api/saved", {
+          credentials: "include",
+        });
+        if (savedResponse.ok) {
+          const savedData = await savedResponse.json();
+          const ids = new Set(savedData.map((p) => p.id));
+          setSavedIds(ids);
+        }
       } catch (err) {
         setError(err.message);
       } finally {
@@ -24,7 +36,7 @@ function Woman() {
       }
     }
 
-    fetchProducts();
+    fetchData();
   }, []);
 
   const formatPrice = (price) => {
@@ -32,6 +44,42 @@ function Woman() {
     const numberPrice = Number(price);
     if (Number.isNaN(numberPrice)) return price;
     return `$${numberPrice.toFixed(2)}`;
+  };
+
+  const handleSaveToggle = async (productId) => {
+    const isSaved = savedIds.has(productId);
+    try {
+      if (isSaved) {
+        // Unsave
+        const response = await fetch(
+          `http://localhost:3000/api/saved/${productId}`,
+          {
+            method: "DELETE",
+            credentials: "include",
+          },
+        );
+        if (response.ok) {
+          setSavedIds((prev) => {
+            const newSet = new Set(prev);
+            newSet.delete(productId);
+            return newSet;
+          });
+        }
+      } else {
+        // Save
+        const response = await fetch("http://localhost:3000/api/saved", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ productId }),
+        });
+        if (response.ok) {
+          setSavedIds((prev) => new Set([...prev, productId]));
+        }
+      }
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   if (loading) {
@@ -52,7 +100,12 @@ function Woman() {
             className="womens-product-wrapper"
             key={product.id ?? product.name}
           >
-            <span className="product-wrapper-save-icon">save</span>
+            <span
+              className={`product-wrapper-save-icon ${savedIds.has(product.id) ? "saved" : ""}`}
+              onClick={() => handleSaveToggle(product.id)}
+            >
+              {savedIds.has(product.id) ? "❤️" : "♡"}
+            </span>
             <div className="product-info-wrapper">
               <span className="product-name">{product.name}</span>
               <span className="product-price">

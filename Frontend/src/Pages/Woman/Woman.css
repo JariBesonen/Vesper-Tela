@@ -23,6 +23,12 @@
   position: absolute;
   right: 1rem;
   top: 1rem;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+.product-wrapper-save-icon.saved {
+  color: red;
 }
 
 .product-info-wrapper {

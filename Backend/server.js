@@ -92,6 +92,10 @@ app.use("/api/auth", authRoutes);
 const productRoutes = require("./routes/productRoutes");
 app.use("/api/products", productRoutes);
 
+// Saved routes
+const savedRoutes = require("./routes/savedRoutes");
+app.use("/api/saved", savedRoutes);
+
 // -----------------------------
 // 5. Start Server
 // -----------------------------
