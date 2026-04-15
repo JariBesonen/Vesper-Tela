@@ -4,6 +4,7 @@ import "./Woman.css";
 function Woman() {
   const [products, setProducts] = useState([]);
   const [savedIds, setSavedIds] = useState(new Set());
+  const [cartIds, setCartIds] = useState(new Set());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -28,6 +29,16 @@ function Woman() {
           const savedData = await savedResponse.json();
           const ids = new Set(savedData.map((p) => p.id));
           setSavedIds(ids);
+        }
+
+        // Fetch cart products
+        const cartResponse = await fetch("http://localhost:3000/api/cart", {
+          credentials: "include",
+        });
+        if (cartResponse.ok) {
+          const cartData = await cartResponse.json();
+          const ids = new Set(cartData.map((p) => p.id));
+          setCartIds(ids);
         }
       } catch (err) {
         setError(err.message);
@@ -82,6 +93,26 @@ function Woman() {
     }
   };
 
+  const handleAddToCart = async (productId) => {
+    try {
+      const response = await fetch("http://localhost:3000/api/cart", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ productId }),
+      });
+      if (!response.ok) {
+        if (response.status === 401) {
+          throw new Error("Please log in to add items to cart.");
+        }
+        throw new Error("Failed to add product to cart.");
+      }
+      setCartIds((prev) => new Set(prev).add(productId));
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
   if (loading) {
     return <div className="womens-page">Loading products...</div>;
   }
@@ -111,6 +142,14 @@ function Woman() {
               <span className="product-price">
                 {formatPrice(product.price)}
               </span>
+              <button
+                className="add-to-cart-btn"
+                type="button"
+                onClick={() => handleAddToCart(product.id)}
+                disabled={cartIds.has(product.id)}
+              >
+                {cartIds.has(product.id) ? "In cart" : "Add to cart"}
+              </button>
             </div>
           </div>
         ))
