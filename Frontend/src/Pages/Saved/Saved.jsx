@@ -6,6 +6,7 @@ import { AuthContext } from "../../contexts/AuthContext.jsx";
 function Saved() {
   const { isLoggedIn, loading: authLoading } = useContext(AuthContext);
   const [products, setProducts] = useState([]);
+  const [cartIds, setCartIds] = useState(new Set());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -35,6 +36,16 @@ function Saved() {
         }
         const data = await response.json();
         setProducts(data || []);
+
+        // Fetch cart items
+        const cartResponse = await fetch("http://localhost:3000/api/cart", {
+          credentials: "include",
+        });
+        if (cartResponse.ok) {
+          const cartData = await cartResponse.json();
+          const ids = new Set(cartData.map((p) => p.id));
+          setCartIds(ids);
+        }
       } catch (err) {
         setError(err.message);
       } finally {
@@ -71,6 +82,23 @@ function Saved() {
     }
   };
 
+  const handleAddToCart = async (productId) => {
+    try {
+      const response = await fetch("http://localhost:3000/api/cart", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ productId }),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to add product to cart");
+      }
+      setCartIds((prev) => new Set(prev).add(productId));
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
   if (loading) {
     return <div className="saved-page">Loading saved products...</div>;
   }
@@ -81,7 +109,7 @@ function Saved() {
         <LoginPromptModal
           open={true}
           message="You must log in to view saved products."
-          onCancel={() => window.location.href = "/"}
+          onCancel={() => (window.location.href = "/")}
           onLogin={() => {
             window.location.href = "/login";
           }}
@@ -115,12 +143,21 @@ function Saved() {
               <div className="item-img">IMG</div>
               <span className="item-name">{product.name}</span>
               <span className="item-price">{formatPrice(product.price)}</span>
-              <button
-                className="unsave-btn"
-                onClick={() => handleUnsave(product.id)}
-              >
-                UNSAVE
-              </button>
+              <div className="saved-item-buttons">
+                <button
+                  className="add-to-cart-btn"
+                  onClick={() => handleAddToCart(product.id)}
+                  disabled={cartIds.has(product.id)}
+                >
+                  {cartIds.has(product.id) ? "In cart" : "Add to cart"}
+                </button>
+                <button
+                  className="unsave-btn"
+                  onClick={() => handleUnsave(product.id)}
+                >
+                  UNSAVE
+                </button>
+              </div>
             </div>
           ))
         )}

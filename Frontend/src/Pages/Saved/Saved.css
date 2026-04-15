@@ -39,14 +39,45 @@
   border: 1px solid black;
 }
 
+.saved-item-buttons {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.add-to-cart-btn {
+  font-size: 1.2rem;
+  height: 3rem;
+  padding: 0 1rem;
+  border-radius: 0;
+  background-color: #1d4ed8;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.add-to-cart-btn:hover:not(:disabled) {
+  background-color: #1e40af;
+}
+
+.add-to-cart-btn:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
 .unsave-btn {
   font-size: 1.2rem;
   height: 3rem;
   padding: 0 1rem;
   border-radius: 0;
   background-color: white;
+  border: 1px solid black;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 
 .unsave-btn:hover {
-  cursor: pointer;
+  background-color: #f3f4f6;
 }
