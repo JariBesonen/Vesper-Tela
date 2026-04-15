@@ -1,0 +1,59 @@
+.login-modal-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 1000;
+}
+
+.login-modal-card {
+  width: min(90%, 420px);
+  padding: 24px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
+  text-align: center;
+}
+
+.login-modal-card h2 {
+  margin: 0 0 12px;
+  font-size: 1.5rem;
+}
+
+.login-modal-card p {
+  margin: 0 0 24px;
+  line-height: 1.5;
+  color: #333;
+}
+
+.login-modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.login-modal-button {
+  min-width: 120px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.login-modal-login {
+  background: #1d4ed8;
+  color: #ffffff;
+}
+
+.login-modal-cancel {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.login-modal-login:hover,
+.login-modal-cancel:hover {
+  opacity: 0.92;
+}

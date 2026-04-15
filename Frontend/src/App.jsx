@@ -12,23 +12,26 @@ import Footer from "./Components/Footer/Footer.jsx";
 import CategoryNav from "./Components/CategoryNav/CategoryNav.jsx";
 import Navbar from "./Components/Navbar/Navbar.jsx";
 import Search from "./Components/Search/Search.jsx";
+import { AuthProvider } from "./contexts/AuthContext.jsx";
 import "./Global.css";
 function App() {
   return (
     <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/saved" element={<Saved />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/men" element={<Men />} />
-        <Route path="/women" element={<Woman />} />
-      </Routes>
-      <Footer />
-      <Search />
-      <CategoryNav />
+      <AuthProvider>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/saved" element={<Saved />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/men" element={<Men />} />
+          <Route path="/women" element={<Woman />} />
+        </Routes>
+        <Footer />
+        <Search />
+        <CategoryNav />
+      </AuthProvider>
     </Router>
   );
 }

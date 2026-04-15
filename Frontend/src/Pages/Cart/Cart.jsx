@@ -1,12 +1,26 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import "./Cart.css";
+import LoginPromptModal from "../../Components/LoginPromptModal/LoginPromptModal.jsx";
+import { AuthContext } from "../../contexts/AuthContext.jsx";
 
 function Cart() {
+  const { isLoggedIn, loading: authLoading } = useContext(AuthContext);
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   useEffect(() => {
+    if (!authLoading && !isLoggedIn) {
+      setShowLoginModal(true);
+      setLoading(false);
+      return;
+    }
+
+    if (authLoading) {
+      return;
+    }
+
     async function fetchCart() {
       try {
         const response = await fetch("http://localhost:3000/api/cart", {
@@ -14,7 +28,8 @@ function Cart() {
         });
         if (!response.ok) {
           if (response.status === 401) {
-            throw new Error("Please log in to view your cart.");
+            setShowLoginModal(true);
+            return;
           }
           throw new Error(`Failed to load cart: ${response.status}`);
         }
@@ -28,7 +43,7 @@ function Cart() {
     }
 
     fetchCart();
-  }, []);
+  }, [authLoading, isLoggedIn]);
 
   const handleRemoveFromCart = async (productId) => {
     try {
@@ -64,12 +79,35 @@ function Cart() {
     return <div className="cart-page">Loading cart...</div>;
   }
 
+  if (showLoginModal) {
+    return (
+      <div className="cart-page">
+        <LoginPromptModal
+          open={true}
+          message="You must log in to view your cart."
+          onCancel={() => window.location.href = "/"}
+          onLogin={() => {
+            window.location.href = "/login";
+          }}
+        />
+      </div>
+    );
+  }
+
   if (error) {
     return <div className="cart-page">Error loading cart: {error}</div>;
   }
 
   return (
     <div className="cart-page">
+      <LoginPromptModal
+        open={showLoginModal}
+        message="You must log in to view your cart."
+        onCancel={() => setShowLoginModal(false)}
+        onLogin={() => {
+          window.location.href = "/login";
+        }}
+      />
       <div className="cart-wrapper">
         {cartItems.length === 0 ? (
           <div className="empty-cart">Your cart is empty.</div>

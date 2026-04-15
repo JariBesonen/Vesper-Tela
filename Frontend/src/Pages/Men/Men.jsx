@@ -1,12 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import "./Men.css";
+import LoginPromptModal from "../../Components/LoginPromptModal/LoginPromptModal.jsx";
+import { AuthContext } from "../../contexts/AuthContext.jsx";
 
 function Men() {
+  const { isLoggedIn } = useContext(AuthContext);
   const [products, setProducts] = useState([]);
   const [savedIds, setSavedIds] = useState(new Set());
   const [cartIds, setCartIds] = useState(new Set());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [loginModalMessage, setLoginModalMessage] = useState("");
 
   useEffect(() => {
     async function fetchData() {
@@ -29,6 +34,8 @@ function Men() {
           const savedData = await savedResponse.json();
           const ids = new Set(savedData.map((p) => p.id));
           setSavedIds(ids);
+        } else if (savedResponse.status !== 401) {
+          throw new Error(`Failed to load saved products: ${savedResponse.status}`);
         }
 
         // Fetch cart products
@@ -39,6 +46,8 @@ function Men() {
           const cartData = await cartResponse.json();
           const ids = new Set(cartData.map((p) => p.id));
           setCartIds(ids);
+        } else if (cartResponse.status !== 401) {
+          throw new Error(`Failed to load cart products: ${cartResponse.status}`);
         }
       } catch (err) {
         setError(err.message);
@@ -58,6 +67,12 @@ function Men() {
   };
 
   const handleSaveToggle = async (productId) => {
+    if (!isLoggedIn) {
+      setLoginModalMessage("Please login to save products.");
+      setShowLoginModal(true);
+      return;
+    }
+
     const isSaved = savedIds.has(productId);
     try {
       if (isSaved) {
@@ -86,6 +101,9 @@ function Men() {
         });
         if (response.ok) {
           setSavedIds((prev) => new Set([...prev, productId]));
+        } else if (response.status === 401) {
+          setLoginModalMessage("Please login to save products.");
+          setShowLoginModal(true);
         }
       }
     } catch (err) {
@@ -94,6 +112,12 @@ function Men() {
   };
 
   const handleAddToCart = async (productId) => {
+    if (!isLoggedIn) {
+      setLoginModalMessage("Please login to add items to cart.");
+      setShowLoginModal(true);
+      return;
+    }
+
     try {
       const response = await fetch("http://localhost:3000/api/cart", {
         method: "POST",
@@ -103,7 +127,9 @@ function Men() {
       });
       if (!response.ok) {
         if (response.status === 401) {
-          throw new Error("Please log in to add items to cart.");
+          setLoginModalMessage("Please login to add items to cart.");
+          setShowLoginModal(true);
+          return;
         }
         throw new Error("Failed to add product to cart.");
       }
@@ -123,6 +149,14 @@ function Men() {
 
   return (
     <div className="mens-page">
+      <LoginPromptModal
+        open={showLoginModal}
+        message={loginModalMessage}
+        onCancel={() => setShowLoginModal(false)}
+        onLogin={() => {
+          window.location.href = "/login";
+        }}
+      />
       {products.length === 0 ? (
         <div>No products found for men.</div>
       ) : (

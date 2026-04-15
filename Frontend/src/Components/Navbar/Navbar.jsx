@@ -1,20 +1,10 @@
 import "./Navbar.css";
 import Logout from "../Logout/Logout.jsx";
-import { useState, useEffect } from "react";
+import { useContext } from "react";
+import { AuthContext } from "../../contexts/AuthContext.jsx";
 function Navbar() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
 
-  // Check session on mount
-  useEffect(() => {
-    fetch("http://localhost:3000/api/auth/session", {
-      credentials: "include",
-    })
-      .then((res) => res.json())
-      .then((data) => setIsLoggedIn(data.loggedIn))
-      .catch(() => setIsLoggedIn(false));
-  }, []);
-
-  // Handler for login (redirect to login page)
   function handleLogin(e) {
     e.preventDefault();
     window.location.href = "/login";
@@ -34,12 +24,16 @@ function Navbar() {
         <a href="/">Vesper Tela</a>
       </h1>
       <ul className="ul-right">
-        <li>
-          <a href="/cart">Cart</a>
-        </li>
-        <li>
-          <a href="/saved">Saved</a>
-        </li>
+        {isLoggedIn && (
+          <>
+            <li>
+              <a href="/cart">Cart</a>
+            </li>
+            <li>
+              <a href="/saved">Saved</a>
+            </li>
+          </>
+        )}
         {isLoggedIn ? (
           <li>
             <Logout onLogout={() => setIsLoggedIn(false)} />
