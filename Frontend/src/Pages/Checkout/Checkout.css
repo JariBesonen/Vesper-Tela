@@ -1,0 +1,144 @@
+.checkout-page {
+  padding: 40px 20px;
+  min-height: calc(100vh - 200px);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.checkout-container {
+  width: 100%;
+  max-width: 600px;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 32px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.checkout-container h2 {
+  margin: 0 0 24px;
+  font-size: 1.8rem;
+  color: #111827;
+}
+
+.checkout-items {
+  margin-bottom: 32px;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 24px;
+}
+
+.checkout-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.item-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.item-name {
+  font-weight: 600;
+  color: #111827;
+  font-size: 0.95rem;
+}
+
+.item-qty {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.item-total {
+  font-weight: 700;
+  color: #1d4ed8;
+  font-size: 0.95rem;
+}
+
+.checkout-summary {
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 28px;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  color: #6b7280;
+  font-size: 0.95rem;
+}
+
+.summary-row.total {
+  border-top: 2px solid #e5e7eb;
+  padding-top: 16px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #111827;
+}
+
+.checkout-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.pay-now-btn,
+.back-to-cart-btn {
+  padding: 14px 20px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pay-now-btn {
+  background: #1d4ed8;
+  color: #ffffff;
+}
+
+.pay-now-btn:hover:not(:disabled) {
+  background: #1e40af;
+  transform: translateY(-1px);
+}
+
+.pay-now-btn:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.back-to-cart-btn {
+  background: #f3f4f6;
+  color: #111827;
+  border: 1px solid #d1d5db;
+}
+
+.back-to-cart-btn:hover:not(:disabled) {
+  background: #e5e7eb;
+}
+
+.back-to-cart-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 640px) {
+  .checkout-container {
+    padding: 20px;
+  }
+
+  .checkout-page {
+    padding: 20px 16px;
+  }
+
+  .checkout-container h2 {
+    font-size: 1.5rem;
+  }
+}

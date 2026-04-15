@@ -1,9 +1,11 @@
 import { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Cart.css";
 import LoginPromptModal from "../../Components/LoginPromptModal/LoginPromptModal.jsx";
 import { AuthContext } from "../../contexts/AuthContext.jsx";
 
 function Cart() {
+  const navigate = useNavigate();
   const { isLoggedIn, loading: authLoading } = useContext(AuthContext);
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -85,7 +87,7 @@ function Cart() {
         <LoginPromptModal
           open={true}
           message="You must log in to view your cart."
-          onCancel={() => window.location.href = "/"}
+          onCancel={() => (window.location.href = "/")}
           onLogin={() => {
             window.location.href = "/login";
           }}
@@ -133,7 +135,11 @@ function Cart() {
         {cartItems.length > 0 && (
           <div className="proceed-to-checkout-wrapper">
             <span>Total: {formatPrice(totalPrice)}</span>
-            <button className="proceed-to-checkout-btn" type="button">
+            <button
+              className="proceed-to-checkout-btn"
+              type="button"
+              onClick={() => navigate("/checkout")}
+            >
               PROCEED TO CHECKOUT
             </button>
           </div>
