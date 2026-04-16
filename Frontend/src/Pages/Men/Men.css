@@ -1,5 +1,5 @@
 .mens-page {
-  margin-top: 5vh;
+  margin-top: calc(var(--nav-height, 5vh) + var(--category-height, 5vh) + 1rem);
   width: 100%;
   min-height: 100vh;
   background-color: rgb(255, 255, 255);
@@ -13,10 +13,15 @@
 
 .mens-product-wrapper {
   width: 80%;
-  height: 35rem;
+  min-height: 25rem;
+  aspect-ratio: 4 / 5;
   border: 1px solid black;
   background-color: white;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  margin: 0 auto;
 }
 
 .product-wrapper-save-icon {
@@ -27,17 +32,125 @@
   font-size: 1.5rem;
 }
 
+.product-name,
+.product-price {
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin: 0.35rem 0;
+}
+
+.add-to-cart-btn {
+  width: fit-content;
+  margin: 0.5rem auto 0;
+  padding: 0.9rem 1.2rem;
+  border-radius: 0;
+  background-color: #1d4ed8;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.add-to-cart-btn:hover:not(:disabled) {
+  background-color: #1e40af;
+}
+
+.add-to-cart-btn:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
 .product-wrapper-save-icon.saved {
   color: red;
 }
 
 .product-info-wrapper {
   width: 100%;
-  height: 10%;
-
   position: absolute;
   bottom: 0;
+  left: 0;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  min-height: 6rem;
+  background-color: rgba(255, 255, 255, 0.95);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .mens-page {
+    grid-template-columns: repeat(2, minmax(250px, 1fr));
+    padding: 2rem 3rem;
+    gap: 1.5rem;
+  }
+
+  .mens-product-wrapper {
+    width: 85%;
+    min-height: 24rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .mens-page {
+    grid-template-columns: repeat(2, minmax(220px, 1fr));
+    padding: 1rem 2rem;
+    gap: 1rem;
+  }
+
+  .mens-product-wrapper {
+    width: 90%;
+    min-height: 20rem;
+  }
+
+  .product-wrapper-save-icon {
+    font-size: 1.3rem;
+    right: 0.8rem;
+    top: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .mens-page {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .mens-product-wrapper {
+    width: 95%;
+    min-height: 18rem;
+  }
+
+  .product-wrapper-save-icon {
+    font-size: 1.2rem;
+    right: 0.5rem;
+    top: 0.5rem;
+  }
+}
+
+@media (max-width: 350px) {
+  .mens-page {
+    padding: 0.5rem;
+    gap: 0.5rem;
+  }
+
+  .mens-product-wrapper {
+    width: 98%;
+    min-height: 15rem;
+  }
+
+  .product-wrapper-save-icon {
+    font-size: 1rem;
+    right: 0.3rem;
+    top: 0.3rem;
+  }
+
+  .product-info-wrapper {
+    height: 15%;
+  }
 }

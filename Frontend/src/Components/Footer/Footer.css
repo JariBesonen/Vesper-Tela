@@ -1,9 +1,15 @@
 footer {
-    height: 2vh;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: black;
-    color: white;
+  height: 2vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
+  color: white;
+}
+
+@media (max-width: 350px) {
+  footer {
+    height: 3vh;
+  }
 }

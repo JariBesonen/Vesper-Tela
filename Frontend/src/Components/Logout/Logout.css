@@ -1,9 +1,16 @@
 .logout-btn {
-    width: 5rem;
+  width: 5rem;
   padding: 0.2rem;
-    background-color: white;
+  background-color: white;
 }
 
 .logout-btn:hover {
-    cursor: pointer;
+  cursor: pointer;
+}
+
+@media (max-width: 350px) {
+  .logout-btn {
+    width: 4rem;
+    padding: 0.15rem;
+  }
 }

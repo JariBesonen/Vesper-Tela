@@ -1,49 +1,154 @@
+:root {
+  --nav-height: 5vh;
+}
+
 nav {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 5vh;
+  height: var(--nav-height);
   display: flex;
   align-items: center;
   justify-content: space-around;
   background-color: rgb(255, 255, 255);
+  padding: 0 1rem;
+  box-sizing: border-box;
+  z-index: 1000;
 }
+
 h1 a {
-    color: black;
-    font-size: 2rem;
-    text-decoration: none;
+  color: black;
+  font-size: 2rem;
+  text-decoration: none;
 }
 
 h1 a:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
-.ul-left, .ul-right {
-    display: flex;
-    list-style: none;
-    gap: 5rem;
-    font-size: 1.2rem;
-    align-items: center;
+.ul-left,
+.ul-right {
+  display: flex;
+  list-style: none;
+  gap: 5rem;
+  font-size: 1.2rem;
+  align-items: center;
 }
 
 nav ul li a {
-    color: black;
-    text-decoration: none;
+  color: black;
+  text-decoration: none;
 }
 
 nav ul li a:hover {
-    cursor: pointer;
-    color: black;
+  cursor: pointer;
+  color: black;
 }
 
 .login-btn {
-    width: 5rem;
+  width: 5rem;
   padding: 0.2rem;
-    background-color: white;
-  
+  background-color: white;
 }
 
 .login-btn:hover {
-    cursor: pointer;
+  cursor: pointer;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  :root {
+    --nav-height: 8vh;
+  }
+
+  nav {
+    height: var(--nav-height);
+    padding: 0 0.5rem;
+  }
+
+  h1 a {
+    font-size: 1.5rem;
+  }
+
+  .ul-left,
+  .ul-right {
+    gap: 1rem;
+    font-size: 1rem;
+  }
+
+  .login-btn {
+    width: 4rem;
+    padding: 0.1rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --nav-height: 10vh;
+  }
+
+  nav {
+    height: var(--nav-height);
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0.5rem;
+  }
+
+  h1 {
+    order: 1;
+    margin: 0.5rem 0;
+  }
+
+  .ul-left {
+    order: 2;
+    gap: 0.5rem;
+  }
+
+  .ul-right {
+    order: 3;
+    gap: 0.5rem;
+  }
+
+  .ul-left,
+  .ul-right {
+    font-size: 0.9rem;
+    gap: 0.5rem;
+  }
+
+  h1 a {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 350px) {
+  :root {
+    --nav-height: 12vh;
+  }
+
+  nav {
+    height: var(--nav-height);
+    padding: 0.3rem;
+  }
+
+  h1 {
+    margin: 0.3rem 0;
+  }
+
+  .ul-left,
+  .ul-right {
+    font-size: 0.8rem;
+    gap: 0.3rem;
+  }
+
+  h1 a {
+    font-size: 1rem;
+  }
+
+  .login-btn {
+    width: 3.5rem;
+    padding: 0.1rem;
+    font-size: 0.8rem;
+  }
 }

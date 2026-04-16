@@ -141,4 +141,156 @@
   .checkout-container h2 {
     font-size: 1.5rem;
   }
+
+  .checkout-items {
+    margin-bottom: 24px;
+  }
+
+  .checkout-item {
+    padding: 8px 0;
+  }
+
+  .item-details {
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .item-name {
+    font-size: 0.9rem;
+  }
+
+  .item-qty {
+    font-size: 0.8rem;
+  }
+
+  .checkout-summary {
+    padding: 16px;
+  }
+
+  .summary-row {
+    font-size: 0.9rem;
+  }
+
+  .checkout-actions {
+    gap: 8px;
+  }
+
+  .pay-now-btn,
+  .back-to-cart-btn {
+    padding: 12px 16px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .checkout-page {
+    padding: 10px 8px;
+  }
+
+  .checkout-container {
+    padding: 16px;
+    max-width: 100%;
+  }
+
+  .checkout-container h2 {
+    font-size: 1.3rem;
+    margin-bottom: 16px;
+  }
+
+  .checkout-items {
+    margin-bottom: 20px;
+  }
+
+  .checkout-item {
+    flex-direction: column;
+    text-align: center;
+    padding: 12px 0;
+  }
+
+  .item-details {
+    margin-bottom: 8px;
+  }
+
+  .checkout-summary {
+    padding: 12px;
+    margin-bottom: 20px;
+  }
+
+  .summary-row {
+    padding: 6px 0;
+    font-size: 0.85rem;
+  }
+
+  .summary-row.total {
+    font-size: 1rem;
+  }
+
+  .checkout-actions {
+    gap: 6px;
+  }
+
+  .pay-now-btn,
+  .back-to-cart-btn {
+    padding: 10px 12px;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 350px) {
+  .checkout-page {
+    padding: 5px 4px;
+  }
+
+  .checkout-container {
+    padding: 12px;
+  }
+
+  .checkout-container h2 {
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+  }
+
+  .checkout-items {
+    margin-bottom: 16px;
+  }
+
+  .checkout-item {
+    padding: 8px 0;
+  }
+
+  .item-details {
+    margin-bottom: 6px;
+  }
+
+  .item-name {
+    font-size: 0.85rem;
+  }
+
+  .item-qty {
+    font-size: 0.75rem;
+  }
+
+  .checkout-summary {
+    padding: 10px;
+    margin-bottom: 16px;
+  }
+
+  .summary-row {
+    padding: 4px 0;
+    font-size: 0.8rem;
+  }
+
+  .summary-row.total {
+    font-size: 0.9rem;
+  }
+
+  .checkout-actions {
+    gap: 4px;
+  }
+
+  .pay-now-btn,
+  .back-to-cart-btn {
+    padding: 8px 10px;
+    font-size: 0.8rem;
+  }
 }

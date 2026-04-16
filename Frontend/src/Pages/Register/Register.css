@@ -4,6 +4,7 @@
   justify-content: center;
   align-items: center;
   background: #111;
+  padding: 1rem;
 }
 
 .register-form {
@@ -49,4 +50,80 @@
 
 .register-form button:hover {
   background: #ddd;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .register-form {
+    height: auto;
+    min-height: 70vh;
+    padding: 1.5rem;
+  }
+
+  .register-form h2 {
+    font-size: 1.5rem;
+  }
+
+  .register-form input {
+    padding: 0.8rem;
+    font-size: 0.95rem;
+  }
+
+  .register-form button {
+    padding: 0.8rem;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .register-page {
+    padding: 0.5rem;
+  }
+
+  .register-form {
+    padding: 1rem;
+    height: auto;
+    min-height: 60vh;
+  }
+
+  .register-form h2 {
+    font-size: 1.3rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .register-form input {
+    padding: 0.7rem;
+    font-size: 0.9rem;
+  }
+
+  .register-form button {
+    padding: 0.7rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 350px) {
+  .register-page {
+    padding: 0.3rem;
+  }
+
+  .register-form {
+    padding: 0.8rem;
+    min-height: 55vh;
+  }
+
+  .register-form h2 {
+    font-size: 1.1rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .register-form input {
+    padding: 0.6rem;
+    font-size: 0.85rem;
+  }
+
+  .register-form button {
+    padding: 0.6rem;
+    font-size: 0.85rem;
+  }
 }
