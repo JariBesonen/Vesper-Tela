@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import "./Men.css";
+import CategoryNav from "../../Components/CategoryNav/CategoryNav.jsx";
 import LoginPromptModal from "../../Components/LoginPromptModal/LoginPromptModal.jsx";
 import { AuthContext } from "../../contexts/AuthContext.jsx";
 
@@ -12,13 +13,15 @@ function Men() {
   const [error, setError] = useState(null);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [loginModalMessage, setLoginModalMessage] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("shirts");
 
   useEffect(() => {
     async function fetchData() {
+      setLoading(true);
       try {
         // Fetch products
         const productResponse = await fetch(
-          "http://localhost:3000/api/products?category=men",
+          `http://localhost:3000/api/products?gender=men&category=${selectedCategory}`,
         );
         if (!productResponse.ok) {
           throw new Error(`Failed to load products: ${productResponse.status}`);
@@ -35,7 +38,9 @@ function Men() {
           const ids = new Set(savedData.map((p) => p.id));
           setSavedIds(ids);
         } else if (savedResponse.status !== 401) {
-          throw new Error(`Failed to load saved products: ${savedResponse.status}`);
+          throw new Error(
+            `Failed to load saved products: ${savedResponse.status}`,
+          );
         }
 
         // Fetch cart products
@@ -47,7 +52,9 @@ function Men() {
           const ids = new Set(cartData.map((p) => p.id));
           setCartIds(ids);
         } else if (cartResponse.status !== 401) {
-          throw new Error(`Failed to load cart products: ${cartResponse.status}`);
+          throw new Error(
+            `Failed to load cart products: ${cartResponse.status}`,
+          );
         }
       } catch (err) {
         setError(err.message);
@@ -57,7 +64,7 @@ function Men() {
     }
 
     fetchData();
-  }, []);
+  }, [selectedCategory]);
 
   const formatPrice = (price) => {
     if (price === undefined || price === null || price === "") return "";
@@ -148,47 +155,54 @@ function Men() {
   }
 
   return (
-    <div className="mens-page">
-      <LoginPromptModal
-        open={showLoginModal}
-        message={loginModalMessage}
-        onCancel={() => setShowLoginModal(false)}
-        onLogin={() => {
-          window.location.href = "/login";
-        }}
+    <>
+      <CategoryNav
+        page="men"
+        selectedCategory={selectedCategory}
+        onCategoryChange={setSelectedCategory}
       />
-      {products.length === 0 ? (
-        <div>No products found for men.</div>
-      ) : (
-        products.map((product) => (
-          <div
-            className="mens-product-wrapper"
-            key={product.id ?? product.name}
-          >
-            <span
-              className={`product-wrapper-save-icon ${savedIds.has(product.id) ? "saved" : ""}`}
-              onClick={() => handleSaveToggle(product.id)}
+      <div className="mens-page">
+        <LoginPromptModal
+          open={showLoginModal}
+          message={loginModalMessage}
+          onCancel={() => setShowLoginModal(false)}
+          onLogin={() => {
+            window.location.href = "/login";
+          }}
+        />
+        {products.length === 0 ? (
+          <div>No products found for men.</div>
+        ) : (
+          products.map((product) => (
+            <div
+              className="mens-product-wrapper"
+              key={product.id ?? product.name}
             >
-              {savedIds.has(product.id) ? "❤️" : "♡"}
-            </span>
-            <div className="product-info-wrapper">
-              <span className="product-name">{product.name}</span>
-              <span className="product-price">
-                {formatPrice(product.price)}
-              </span>
-              <button
-                className="add-to-cart-btn"
-                type="button"
-                onClick={() => handleAddToCart(product.id)}
-                disabled={cartIds.has(product.id)}
+              <span
+                className={`product-wrapper-save-icon ${savedIds.has(product.id) ? "saved" : ""}`}
+                onClick={() => handleSaveToggle(product.id)}
               >
-                {cartIds.has(product.id) ? "In cart" : "Add to cart"}
-              </button>
+                {savedIds.has(product.id) ? "❤️" : "♡"}
+              </span>
+              <div className="product-info-wrapper">
+                <span className="product-name">{product.name}</span>
+                <span className="product-price">
+                  {formatPrice(product.price)}
+                </span>
+                <button
+                  className="add-to-cart-btn"
+                  type="button"
+                  onClick={() => handleAddToCart(product.id)}
+                  disabled={cartIds.has(product.id)}
+                >
+                  {cartIds.has(product.id) ? "In cart" : "Add to cart"}
+                </button>
+              </div>
             </div>
-          </div>
-        ))
-      )}
-    </div>
+          ))
+        )}
+      </div>
+    </>
   );
 }
 
