@@ -1,11 +1,20 @@
 import { useState, useEffect, useContext } from "react";
+import { useSearchParams } from "react-router-dom";
 import "./Woman.css";
 import CategoryNav from "../../Components/CategoryNav/CategoryNav.jsx";
 import LoginPromptModal from "../../Components/LoginPromptModal/LoginPromptModal.jsx";
 import { AuthContext } from "../../contexts/AuthContext.jsx";
 
 function Woman() {
+  const validCategories = ["shirts", "pants", "shoes"];
   const { isLoggedIn } = useContext(AuthContext);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const categoryFromUrl = (
+    searchParams.get("category") || "shirts"
+  ).toLowerCase();
+  const initialCategory = validCategories.includes(categoryFromUrl)
+    ? categoryFromUrl
+    : "shirts";
   const [products, setProducts] = useState([]);
   const [savedIds, setSavedIds] = useState(new Set());
   const [cartIds, setCartIds] = useState(new Set());
@@ -13,7 +22,18 @@ function Woman() {
   const [error, setError] = useState(null);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [loginModalMessage, setLoginModalMessage] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("shirts");
+  const [selectedCategory, setSelectedCategory] = useState(initialCategory);
+
+  useEffect(() => {
+    if (initialCategory !== selectedCategory) {
+      setSelectedCategory(initialCategory);
+    }
+  }, [initialCategory, selectedCategory]);
+
+  const handleCategoryChange = (nextCategory) => {
+    setSelectedCategory(nextCategory);
+    setSearchParams({ category: nextCategory });
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -159,7 +179,7 @@ function Woman() {
       <CategoryNav
         page="women"
         selectedCategory={selectedCategory}
-        onCategoryChange={setSelectedCategory}
+        onCategoryChange={handleCategoryChange}
       />
       <div className="womens-page">
         <LoginPromptModal
