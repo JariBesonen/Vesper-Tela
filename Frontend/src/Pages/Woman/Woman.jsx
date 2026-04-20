@@ -178,6 +178,15 @@ function Woman() {
               className="womens-product-wrapper"
               key={product.id ?? product.name}
             >
+              <img
+                className="product-image"
+                src={
+                  product.image ||
+                  `/images/products/women-${product.category || "shirts"}.svg`
+                }
+                alt={product.name}
+                loading="lazy"
+              />
               <span
                 className={`product-wrapper-save-icon ${savedIds.has(product.id) ? "saved" : ""}`}
                 onClick={() => handleSaveToggle(product.id)}
