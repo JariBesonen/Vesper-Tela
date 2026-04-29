@@ -14,6 +14,9 @@ function Navbar() {
     <nav>
       <ul className="ul-left">
         <li>
+          <a href="/">Home</a>
+        </li>
+        <li>
           <a href="/men">Men</a>
         </li>
         <li>
