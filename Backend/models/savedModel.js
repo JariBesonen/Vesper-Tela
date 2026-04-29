@@ -2,7 +2,7 @@ const pool = require("../config/db");
 
 exports.getSavedProducts = async (userId) => {
   const query = `
-    SELECT p.id, p.name, p.price, p.gender
+    SELECT p.id, p.name, p.price, p.gender, p.category, p.image
     FROM saved s
     JOIN products p ON s.product_id = p.id
     WHERE s.user_id = $1

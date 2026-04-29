@@ -40,6 +40,8 @@
   height: 80%;
   border: 1px solid black;
   min-height: 12rem;
+  display: block;
+  object-fit: cover;
 }
 
 .saved-item-buttons {

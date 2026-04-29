@@ -72,6 +72,33 @@ function Cart() {
     return `$${numberPrice.toFixed(2)}`;
   };
 
+  const getProductImageSrc = (product) => {
+    const rawImage = String(product?.image || "").trim();
+    if (rawImage) {
+      if (
+        /^(https?:)?\/\//i.test(rawImage) ||
+        rawImage.startsWith("/") ||
+        rawImage.startsWith("data:") ||
+        rawImage.startsWith("blob:")
+      ) {
+        return rawImage;
+      }
+      return `/${rawImage.replace(/^\/+/, "")}`;
+    }
+
+    const normalizedGender = String(product?.gender || "").toLowerCase();
+    const genderPrefix =
+      normalizedGender === "women" || normalizedGender === "female"
+        ? "women"
+        : "men";
+    const normalizedCategory = String(product?.category || "").toLowerCase();
+    const category = ["shirts", "pants", "shoes"].includes(normalizedCategory)
+      ? normalizedCategory
+      : "shirts";
+
+    return `/images/products/${genderPrefix}-${category}.svg`;
+  };
+
   const totalPrice = cartItems.reduce(
     (sum, item) => sum + Number(item.price || 0) * (item.quantity || 1),
     0,
@@ -116,7 +143,12 @@ function Cart() {
         ) : (
           cartItems.map((product) => (
             <div className="cart-item" key={product.id}>
-              <div className="item-img">IMG</div>
+              <img
+                className="item-img"
+                src={getProductImageSrc(product)}
+                alt={product.name}
+                loading="lazy"
+              />
               <span className="item-name">{product.name}</span>
               <span className="item-price">
                 {formatPrice(product.price)} x {product.quantity}
