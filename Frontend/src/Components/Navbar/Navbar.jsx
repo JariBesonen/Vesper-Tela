@@ -18,17 +18,25 @@ function Navbar() {
     <nav>
       <ul className="ul-left">
         <li>
-          <a href="/">Home</a>
+          <a href="/" className="nav-link">
+            Home
+          </a>
         </li>
         <li>
-          <a href="/men">Men</a>
+          <a href="/men" className="nav-link">
+            Men
+          </a>
         </li>
         <li>
-          <a href="/women">Woman</a>
+          <a href="/women" className="nav-link">
+            Woman
+          </a>
         </li>
       </ul>
       <h1>
-        <a href="/">Vesper Tela</a>
+        <a href="/" className="logo">
+          Vesper Tela
+        </a>
       </h1>
       <ul className="ul-right">
         <li>
@@ -43,10 +51,14 @@ function Navbar() {
         {isLoggedIn && (
           <>
             <li>
-              <a href="/cart">Cart</a>
+              <a href="/cart" className="nav-link">
+                Cart
+              </a>
             </li>
             <li>
-              <a href="/saved">Saved</a>
+              <a href="/saved" className="nav-link">
+                Saved
+              </a>
             </li>
           </>
         )}

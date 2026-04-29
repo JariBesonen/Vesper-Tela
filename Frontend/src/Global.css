@@ -1,9 +1,26 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..900&family=Inter+Tight:wght@300..900&display=swap");
+
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
 
-* {
-  font-family: "roboto", Verdana, sans-serif;
+body {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.logo,
+.nav-link,
+nav a,
+nav button {
+  font-family: "Inter Tight", sans-serif;
+  letter-spacing: -0.04em;
 }
