@@ -67,7 +67,17 @@ nav ul li a:hover {
   background-color: white;
 }
 
+.search-btn {
+  width: 6rem;
+  padding: 0.2rem;
+  background-color: white;
+}
+
 .login-btn:hover {
+  cursor: pointer;
+}
+
+.search-btn:hover {
   cursor: pointer;
 }
 
@@ -94,6 +104,12 @@ nav ul li a:hover {
 
   .login-btn {
     width: 4rem;
+    padding: 0.1rem;
+    font-size: 0.9rem;
+  }
+
+  .search-btn {
+    width: 5rem;
     padding: 0.1rem;
     font-size: 0.9rem;
   }
@@ -164,6 +180,12 @@ nav ul li a:hover {
 
   .login-btn {
     width: 3.5rem;
+    padding: 0.1rem;
+    font-size: 0.8rem;
+  }
+
+  .search-btn {
+    width: 4.5rem;
     padding: 0.1rem;
     font-size: 0.8rem;
   }

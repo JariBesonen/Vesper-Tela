@@ -10,6 +10,10 @@ function Navbar() {
     window.location.href = "/login";
   }
 
+  function handleOpenSearch() {
+    window.dispatchEvent(new CustomEvent("vesper-search-open"));
+  }
+
   return (
     <nav>
       <ul className="ul-left">
@@ -27,6 +31,15 @@ function Navbar() {
         <a href="/">Vesper Tela</a>
       </h1>
       <ul className="ul-right">
+        <li>
+          <button
+            type="button"
+            className="search-btn"
+            onClick={handleOpenSearch}
+          >
+            SEARCH
+          </button>
+        </li>
         {isLoggedIn && (
           <>
             <li>
