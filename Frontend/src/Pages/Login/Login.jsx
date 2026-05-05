@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { mergeGuestCartIntoServerCart } from "../../utils/guestCart.js";
 import "./Login.css";
 
 function Login() {
@@ -31,7 +32,22 @@ function Login() {
           alert(data.error || "Login failed");
           return;
         }
-        alert("Login successful");
+
+        const { mergedCount, failedCount } =
+          await mergeGuestCartIntoServerCart();
+
+        if (mergedCount > 0 && failedCount === 0) {
+          alert(
+            `Login successful. ${mergedCount} guest item(s) were moved to your cart.`,
+          );
+        } else if (mergedCount > 0 && failedCount > 0) {
+          alert(
+            `Login successful. ${mergedCount} guest item(s) were moved to your cart. ${failedCount} item(s) could not be moved and remain local.`,
+          );
+        } else {
+          alert("Login successful");
+        }
+
         window.location.href = "/";
       } catch (err) {
         console.error("Login error:", err);

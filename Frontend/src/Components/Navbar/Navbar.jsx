@@ -48,16 +48,21 @@ function Navbar() {
             SEARCH
           </button>
         </li>
+        <li>
+          <a href="/cart" className="nav-link">
+            Cart
+          </a>
+        </li>
         {isLoggedIn && (
           <>
             <li>
-              <a href="/cart" className="nav-link">
-                Cart
+              <a href="/saved" className="nav-link">
+                Saved
               </a>
             </li>
             <li>
-              <a href="/saved" className="nav-link">
-                Saved
+              <a href="/orders" className="nav-link">
+                Orders
               </a>
             </li>
           </>

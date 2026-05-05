@@ -100,6 +100,10 @@ app.use("/api/saved", savedRoutes);
 const cartRoutes = require("./routes/cartRoutes");
 app.use("/api/cart", cartRoutes);
 
+// Order routes
+const orderRoutes = require("./routes/orderRoutes");
+app.use("/api/orders", orderRoutes);
+
 // -----------------------------
 // 5. Start Server
 // -----------------------------

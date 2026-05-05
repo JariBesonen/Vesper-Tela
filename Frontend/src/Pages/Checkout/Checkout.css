@@ -21,6 +21,16 @@
   color: #111827;
 }
 
+.guest-checkout-note {
+  margin: -8px 0 20px;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #f8fafc;
+  color: #475569;
+  font-size: 0.9rem;
+}
+
 .checkout-items {
   margin-bottom: 32px;
   border-bottom: 1px solid #e5e7eb;

@@ -1,7 +1,7 @@
 import { useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import LoginPromptModal from "../../Components/LoginPromptModal/LoginPromptModal.jsx";
 import { AuthContext } from "../../contexts/AuthContext.jsx";
+import { addGuestCartItem } from "../../utils/guestCart.js";
 import "./Product.css";
 
 const SIZE_OPTIONS = {
@@ -56,13 +56,12 @@ const getShortDescription = (product) => {
 function Product() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { isLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn, loading: authLoading } = useContext(AuthContext);
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [showLoginModal, setShowLoginModal] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
@@ -70,7 +69,9 @@ function Product() {
       setLoading(true);
       setError("");
       try {
-        const response = await fetch(`http://localhost:3000/api/products/${id}`);
+        const response = await fetch(
+          `http://localhost:3000/api/products/${id}`,
+        );
         if (!response.ok) {
           throw new Error(
             response.status === 404
@@ -92,7 +93,10 @@ function Product() {
   }, [id]);
 
   const category = normalizeCategory(product?.category);
-  const sizeOptions = useMemo(() => SIZE_OPTIONS[category] || SIZE_OPTIONS.shirts, [category]);
+  const sizeOptions = useMemo(
+    () => SIZE_OPTIONS[category] || SIZE_OPTIONS.shirts,
+    [category],
+  );
 
   useEffect(() => {
     if (sizeOptions.length > 0) {
@@ -115,13 +119,19 @@ function Product() {
 
   const handleAddToCart = async () => {
     if (!product?.id) return;
+    if (authLoading) return;
+
+    setError("");
+    setSuccessMessage("");
 
     if (!isLoggedIn) {
-      setShowLoginModal(true);
+      addGuestCartItem(product, quantity);
+      setSuccessMessage(
+        `Added ${quantity} item${quantity > 1 ? "s" : ""} to cart as guest.`,
+      );
       return;
     }
 
-    setSuccessMessage("");
     try {
       const response = await fetch("http://localhost:3000/api/cart", {
         method: "POST",
@@ -138,7 +148,9 @@ function Product() {
         throw new Error("Failed to add product to cart.");
       }
 
-      setSuccessMessage(`Added ${quantity} item${quantity > 1 ? "s" : ""} to cart.`);
+      setSuccessMessage(
+        `Added ${quantity} item${quantity > 1 ? "s" : ""} to cart.`,
+      );
     } catch (err) {
       setError(err.message || "Unable to add product to cart.");
     }
@@ -158,15 +170,6 @@ function Product() {
 
   return (
     <div className="product-page">
-      <LoginPromptModal
-        open={showLoginModal}
-        message="Please login to add items to cart."
-        onCancel={() => setShowLoginModal(false)}
-        onLogin={() => {
-          window.location.href = "/login";
-        }}
-      />
-
       <div className="product-detail-card">
         <button
           className="product-back-btn"
@@ -187,7 +190,9 @@ function Product() {
         <div className="product-content-column">
           <h1>{product.name}</h1>
           <p className="product-detail-price">{formatPrice(product.price)}</p>
-          <p className="product-detail-description">{getShortDescription(product)}</p>
+          <p className="product-detail-description">
+            {getShortDescription(product)}
+          </p>
 
           <div className="product-control-group">
             <label htmlFor="size-select">Size</label>
@@ -230,11 +235,17 @@ function Product() {
             </div>
           </div>
 
-          <button className="product-add-btn" type="button" onClick={handleAddToCart}>
+          <button
+            className="product-add-btn"
+            type="button"
+            onClick={handleAddToCart}
+          >
             Add to cart
           </button>
 
-          {successMessage && <p className="product-success-msg">{successMessage}</p>}
+          {successMessage && (
+            <p className="product-success-msg">{successMessage}</p>
+          )}
           {error && <p className="product-error-msg">{error}</p>}
         </div>
       </div>

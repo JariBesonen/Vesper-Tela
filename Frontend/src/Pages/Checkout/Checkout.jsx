@@ -2,61 +2,70 @@ import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Checkout.css";
 import { AuthContext } from "../../contexts/AuthContext.jsx";
+import { clearGuestCart, getGuestCartItems } from "../../utils/guestCart.js";
 
 function Checkout() {
   const navigate = useNavigate();
-  const { isLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn, loading: authLoading } = useContext(AuthContext);
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [processing, setProcessing] = useState(false);
 
   useEffect(() => {
-    if (!isLoggedIn) {
-      navigate("/login");
+    if (authLoading) return;
+
+    if (isLoggedIn) {
+      async function fetchCart() {
+        try {
+          const response = await fetch("http://localhost:3000/api/cart", {
+            credentials: "include",
+          });
+          if (!response.ok) {
+            throw new Error("Failed to load cart");
+          }
+          const data = await response.json();
+          setCartItems(data || []);
+        } catch (err) {
+          setError(err.message);
+        } finally {
+          setLoading(false);
+        }
+      }
+
+      fetchCart();
       return;
     }
 
-    async function fetchCart() {
-      try {
-        const response = await fetch("http://localhost:3000/api/cart", {
-          credentials: "include",
-        });
-        if (!response.ok) {
-          throw new Error("Failed to load cart");
-        }
-        const data = await response.json();
-        setCartItems(data || []);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchCart();
-  }, [isLoggedIn, navigate]);
+    setCartItems(getGuestCartItems());
+    setLoading(false);
+  }, [authLoading, isLoggedIn]);
 
   const handlePayment = async () => {
     setProcessing(true);
+    setError(null);
+
     try {
-      // Clear the cart after successful "payment"
-      await Promise.all(
-        cartItems.map((item) =>
-          fetch(`http://localhost:3000/api/cart/${item.id}`, {
-            method: "DELETE",
+      if (isLoggedIn) {
+        const response = await fetch(
+          "http://localhost:3000/api/orders/checkout",
+          {
+            method: "POST",
             credentials: "include",
-          }),
-        ),
-      );
+          },
+        );
+        if (!response.ok) {
+          const data = await response.json().catch(() => ({}));
+          throw new Error(data.error || "Checkout failed");
+        }
+      } else {
+        clearGuestCart();
+      }
 
-      // Show thank you alert
       alert("Thank you for your purchase!");
-
-      // Redirect to home
       navigate("/");
     } catch (err) {
-      setError("Payment failed. Please try again.");
+      setError(err.message || "Payment failed. Please try again.");
       setProcessing(false);
     }
   };
@@ -101,6 +110,12 @@ function Checkout() {
     <div className="checkout-page">
       <div className="checkout-container">
         <h2>Order Summary</h2>
+        {!isLoggedIn && (
+          <p className="guest-checkout-note">
+            You are checking out as guest. This order will not appear in order
+            history.
+          </p>
+        )}
 
         <div className="checkout-items">
           {cartItems.map((item) => (
