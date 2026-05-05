@@ -21,13 +21,13 @@ exports.addCart = async (req, res) => {
     return res.status(401).json({ error: "Not authenticated" });
   }
 
-  const { productId } = req.body;
+  const { productId, quantity } = req.body;
   if (!productId) {
     return res.status(400).json({ error: "Product ID required" });
   }
 
   try {
-    const result = await cartModel.addToCart(userId, productId);
+    const result = await cartModel.addToCart(userId, productId, quantity);
     res.json({ message: "Product added to cart", quantity: result.quantity });
   } catch (err) {
     console.error("ADD CART ERROR:", err);

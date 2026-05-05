@@ -142,7 +142,19 @@ function Cart() {
           <div className="empty-cart">Your cart is empty.</div>
         ) : (
           cartItems.map((product) => (
-            <div className="cart-item" key={product.id}>
+            <div
+              className="cart-item"
+              key={product.id}
+              role="button"
+              tabIndex={0}
+              onClick={() => navigate(`/product/${product.id}`)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  navigate(`/product/${product.id}`);
+                }
+              }}
+            >
               <img
                 className="item-img"
                 src={getProductImageSrc(product)}
@@ -156,7 +168,10 @@ function Cart() {
               <button
                 className="remove-from-cart-btn"
                 type="button"
-                onClick={() => handleRemoveFromCart(product.id)}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  handleRemoveFromCart(product.id);
+                }}
               >
                 REMOVE FROM CART
               </button>

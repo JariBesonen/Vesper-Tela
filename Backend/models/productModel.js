@@ -73,3 +73,19 @@ exports.findAll = async () => {
     "SELECT id, name, price, gender FROM products ORDER BY name";
   return safeQueryWithOptionalColumns(query, fallbackQuery, []);
 };
+
+exports.findById = async (id) => {
+  const numericId = Number(id);
+  if (!Number.isInteger(numericId) || numericId <= 0) return null;
+
+  const query =
+    "SELECT id, name, price, gender, category, image FROM products WHERE id = $1 LIMIT 1";
+  const fallbackQuery =
+    "SELECT id, name, price, gender FROM products WHERE id = $1 LIMIT 1";
+
+  const rows = await safeQueryWithOptionalColumns(query, fallbackQuery, [
+    numericId,
+  ]);
+
+  return rows[0] || null;
+};

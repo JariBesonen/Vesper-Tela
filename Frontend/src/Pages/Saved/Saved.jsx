@@ -1,9 +1,11 @@
 import { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import "./Saved.css";
 import LoginPromptModal from "../../Components/LoginPromptModal/LoginPromptModal.jsx";
 import { AuthContext } from "../../contexts/AuthContext.jsx";
 
 function Saved() {
+  const navigate = useNavigate();
   const { isLoggedIn, loading: authLoading } = useContext(AuthContext);
   const [products, setProducts] = useState([]);
   const [cartIds, setCartIds] = useState(new Set());
@@ -166,7 +168,19 @@ function Saved() {
           <div>No saved products.</div>
         ) : (
           products.map((product) => (
-            <div className="saved-item" key={product.id}>
+            <div
+              className="saved-item"
+              key={product.id}
+              role="button"
+              tabIndex={0}
+              onClick={() => navigate(`/product/${product.id}`)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  navigate(`/product/${product.id}`);
+                }
+              }}
+            >
               <img
                 className="item-img"
                 src={getProductImageSrc(product)}
@@ -178,14 +192,20 @@ function Saved() {
               <div className="saved-item-buttons">
                 <button
                   className="add-to-cart-btn"
-                  onClick={() => handleAddToCart(product.id)}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    handleAddToCart(product.id);
+                  }}
                   disabled={cartIds.has(product.id)}
                 >
                   {cartIds.has(product.id) ? "In cart" : "Add to cart"}
                 </button>
                 <button
                   className="unsave-btn"
-                  onClick={() => handleUnsave(product.id)}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    handleUnsave(product.id);
+                  }}
                 >
                   UNSAVE
                 </button>

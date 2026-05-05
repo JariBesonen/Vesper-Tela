@@ -22,6 +22,7 @@
   justify-content: flex-start;
   margin: 0 auto;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .product-wrapper-save-icon {

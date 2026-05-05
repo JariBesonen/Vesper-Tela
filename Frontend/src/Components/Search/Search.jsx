@@ -55,6 +55,10 @@ const getProductScore = (product, query) => {
 };
 
 const getProductRoute = (product) => {
+  if (product?.id) {
+    return `/product/${product.id}`;
+  }
+
   const gender = String(product?.gender || "").toLowerCase();
   const category = String(product?.category || "shirts").toLowerCase();
   const safeCategory = ["shirts", "pants", "shoes"].includes(category)

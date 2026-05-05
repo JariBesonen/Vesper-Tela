@@ -8,6 +8,7 @@ import Register from "./Pages/Register/Register.jsx";
 import Men from "./Pages/Men/Men.jsx";
 import Woman from "./Pages/Woman/Woman.jsx";
 import Saved from "./Pages/Saved/Saved.jsx";
+import Product from "./Pages/Product/Product.jsx";
 //IMPORTED COMPONENTS//
 import Footer from "./Components/Footer/Footer.jsx";
 import Navbar from "./Components/Navbar/Navbar.jsx";
@@ -28,6 +29,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/men" element={<Men />} />
           <Route path="/women" element={<Woman />} />
+          <Route path="/product/:id" element={<Product />} />
         </Routes>
         <Footer />
         <Search />

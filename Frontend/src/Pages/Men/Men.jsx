@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import "./Men.css";
 import CategoryNav from "../../Components/CategoryNav/CategoryNav.jsx";
 import LoginPromptModal from "../../Components/LoginPromptModal/LoginPromptModal.jsx";
@@ -8,6 +8,7 @@ import { AuthContext } from "../../contexts/AuthContext.jsx";
 function Men() {
   const validCategories = ["shirts", "pants", "shoes"];
   const { isLoggedIn } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const categoryFromUrl = (
     searchParams.get("category") || "shirts"
@@ -17,7 +18,6 @@ function Men() {
     : "shirts";
   const [products, setProducts] = useState([]);
   const [savedIds, setSavedIds] = useState(new Set());
-  const [cartIds, setCartIds] = useState(new Set());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -60,20 +60,6 @@ function Men() {
         } else if (savedResponse.status !== 401) {
           throw new Error(
             `Failed to load saved products: ${savedResponse.status}`,
-          );
-        }
-
-        // Fetch cart products
-        const cartResponse = await fetch("http://localhost:3000/api/cart", {
-          credentials: "include",
-        });
-        if (cartResponse.ok) {
-          const cartData = await cartResponse.json();
-          const ids = new Set(cartData.map((p) => p.id));
-          setCartIds(ids);
-        } else if (cartResponse.status !== 401) {
-          throw new Error(
-            `Failed to load cart products: ${cartResponse.status}`,
           );
         }
       } catch (err) {
@@ -138,34 +124,6 @@ function Men() {
     }
   };
 
-  const handleAddToCart = async (productId) => {
-    if (!isLoggedIn) {
-      setLoginModalMessage("Please login to add items to cart.");
-      setShowLoginModal(true);
-      return;
-    }
-
-    try {
-      const response = await fetch("http://localhost:3000/api/cart", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ productId }),
-      });
-      if (!response.ok) {
-        if (response.status === 401) {
-          setLoginModalMessage("Please login to add items to cart.");
-          setShowLoginModal(true);
-          return;
-        }
-        throw new Error("Failed to add product to cart.");
-      }
-      setCartIds((prev) => new Set(prev).add(productId));
-    } catch (err) {
-      setError(err.message);
-    }
-  };
-
   if (loading) {
     return <div className="mens-page">Loading products...</div>;
   }
@@ -197,6 +155,15 @@ function Men() {
             <div
               className="mens-product-wrapper"
               key={product.id ?? product.name}
+              role="button"
+              tabIndex={0}
+              onClick={() => navigate(`/product/${product.id}`)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  navigate(`/product/${product.id}`);
+                }
+              }}
             >
               <img
                 className="product-image"
@@ -209,7 +176,10 @@ function Men() {
               />
               <span
                 className={`product-wrapper-save-icon ${savedIds.has(product.id) ? "saved" : ""}`}
-                onClick={() => handleSaveToggle(product.id)}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  handleSaveToggle(product.id);
+                }}
               >
                 {savedIds.has(product.id) ? "❤️" : "♡"}
               </span>
@@ -218,14 +188,6 @@ function Men() {
                 <span className="product-price">
                   {formatPrice(product.price)}
                 </span>
-                <button
-                  className="add-to-cart-btn"
-                  type="button"
-                  onClick={() => handleAddToCart(product.id)}
-                  disabled={cartIds.has(product.id)}
-                >
-                  {cartIds.has(product.id) ? "In cart" : "Add to cart"}
-                </button>
               </div>
             </div>
           ))

@@ -12,15 +12,21 @@ exports.getCartItems = async (userId) => {
   return result.rows;
 };
 
-exports.addToCart = async (userId, productId) => {
+exports.addToCart = async (userId, productId, quantity = 1) => {
+  const numericQuantity = Number(quantity);
+  const safeQuantity =
+    Number.isInteger(numericQuantity) && numericQuantity > 0
+      ? numericQuantity
+      : 1;
+
   const query = `
     INSERT INTO cart (user_id, product_id, quantity)
-    VALUES ($1, $2, 1)
+    VALUES ($1, $2, $3)
     ON CONFLICT (user_id, product_id)
-    DO UPDATE SET quantity = cart.quantity + 1
+    DO UPDATE SET quantity = cart.quantity + EXCLUDED.quantity
     RETURNING quantity
   `;
-  const result = await pool.query(query, [userId, productId]);
+  const result = await pool.query(query, [userId, productId, safeQuantity]);
   return result.rows[0];
 };
 

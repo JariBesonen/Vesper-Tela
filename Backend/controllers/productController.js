@@ -30,6 +30,22 @@ exports.getProducts = async (req, res) => {
   }
 };
 
+exports.getProductById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const product = await productModel.findById(id);
+    if (!product) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+
+    return res.json(product);
+  } catch (err) {
+    console.error("PRODUCT BY ID ERROR:", err);
+    return res.status(500).json({ error: "Failed to load product" });
+  }
+};
+
 exports.createProduct = async (req, res) => {
   try {
     const { name, price, gender, category, image } = req.body;
