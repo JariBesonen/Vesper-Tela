@@ -8,7 +8,6 @@ function Saved() {
   const navigate = useNavigate();
   const { isLoggedIn, loading: authLoading } = useContext(AuthContext);
   const [products, setProducts] = useState([]);
-  const [cartIds, setCartIds] = useState(new Set());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -38,16 +37,6 @@ function Saved() {
         }
         const data = await response.json();
         setProducts(data || []);
-
-        // Fetch cart items
-        const cartResponse = await fetch("http://localhost:3000/api/cart", {
-          credentials: "include",
-        });
-        if (cartResponse.ok) {
-          const cartData = await cartResponse.json();
-          const ids = new Set(cartData.map((p) => p.id));
-          setCartIds(ids);
-        }
       } catch (err) {
         setError(err.message);
       } finally {
@@ -106,23 +95,6 @@ function Saved() {
       }
       // Remove from local state
       setProducts(products.filter((p) => p.id !== productId));
-    } catch (err) {
-      setError(err.message);
-    }
-  };
-
-  const handleAddToCart = async (productId) => {
-    try {
-      const response = await fetch("http://localhost:3000/api/cart", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ productId }),
-      });
-      if (!response.ok) {
-        throw new Error("Failed to add product to cart");
-      }
-      setCartIds((prev) => new Set(prev).add(productId));
     } catch (err) {
       setError(err.message);
     }
@@ -187,28 +159,27 @@ function Saved() {
                 alt={product.name}
                 loading="lazy"
               />
-              <span className="item-name">{product.name}</span>
-              <span className="item-price">{formatPrice(product.price)}</span>
-              <div className="saved-item-buttons">
-                <button
-                  className="add-to-cart-btn"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    handleAddToCart(product.id);
-                  }}
-                  disabled={cartIds.has(product.id)}
-                >
-                  {cartIds.has(product.id) ? "In cart" : "Add to cart"}
-                </button>
-                <button
-                  className="unsave-btn"
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    handleUnsave(product.id);
-                  }}
-                >
-                  UNSAVE
-                </button>
+              <div className="saved-item-content">
+                <div className="saved-item-header-row">
+                  <h3 className="item-name">{product.name}</h3>
+                  <span className="item-price">
+                    {formatPrice(product.price)}
+                  </span>
+                </div>
+                <p className="saved-item-hint">
+                  Click card to view product details
+                </p>
+                <div className="saved-item-buttons">
+                  <button
+                    className="unsave-btn"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      handleUnsave(product.id);
+                    }}
+                  >
+                    UNSAVE
+                  </button>
+                </div>
               </div>
             </div>
           ))

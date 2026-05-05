@@ -156,32 +156,51 @@ function Cart() {
               }}
             >
               <img
-                className="item-img"
+                className="cart-item-img"
                 src={getProductImageSrc(product)}
                 alt={product.name}
                 loading="lazy"
               />
-              <span className="item-name">{product.name}</span>
-              <span className="item-price">
-                {formatPrice(product.price)} x {product.quantity}
-              </span>
-              <button
-                className="remove-from-cart-btn"
-                type="button"
-                onClick={(event) => {
-                  event.stopPropagation();
-                  handleRemoveFromCart(product.id);
-                }}
-              >
-                REMOVE FROM CART
-              </button>
+              <div className="cart-item-content">
+                <div className="cart-item-header-row">
+                  <h3 className="cart-item-name">{product.name}</h3>
+                  <span className="cart-item-line-total">
+                    {formatPrice(
+                      Number(product.price || 0) *
+                        Number(product.quantity || 1),
+                    )}
+                  </span>
+                </div>
+                <div className="cart-item-meta-row">
+                  <span className="cart-item-unit-price">
+                    {formatPrice(product.price)} each
+                  </span>
+                  <span className="cart-item-qty">Qty: {product.quantity}</span>
+                </div>
+                <p className="cart-item-hint">
+                  Click card to view product details
+                </p>
+                <div className="cart-item-buttons">
+                  <button
+                    className="remove-from-cart-btn"
+                    type="button"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      handleRemoveFromCart(product.id);
+                    }}
+                  >
+                    REMOVE
+                  </button>
+                </div>
+              </div>
             </div>
           ))
         )}
 
         {cartItems.length > 0 && (
           <div className="proceed-to-checkout-wrapper">
-            <span>Total: {formatPrice(totalPrice)}</span>
+            <span className="cart-total-label">Total</span>
+            <span className="cart-total-value">{formatPrice(totalPrice)}</span>
             <button
               className="proceed-to-checkout-btn"
               type="button"
