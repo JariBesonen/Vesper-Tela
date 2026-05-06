@@ -21,14 +21,18 @@ exports.addCart = async (req, res) => {
     return res.status(401).json({ error: "Not authenticated" });
   }
 
-  const { productId, quantity } = req.body;
+  const { productId, quantity, size } = req.body;
   if (!productId) {
     return res.status(400).json({ error: "Product ID required" });
   }
 
   try {
-    const result = await cartModel.addToCart(userId, productId, quantity);
-    res.json({ message: "Product added to cart", quantity: result.quantity });
+    const result = await cartModel.addToCart(userId, productId, quantity, size);
+    res.json({
+      message: "Product added to cart",
+      quantity: result.quantity,
+      size: result.size,
+    });
   } catch (err) {
     console.error("ADD CART ERROR:", err);
     res.status(500).json({ error: "Failed to add product to cart" });
@@ -42,12 +46,13 @@ exports.removeCart = async (req, res) => {
   }
 
   const { productId } = req.params;
+  const { size } = req.query;
   if (!productId) {
     return res.status(400).json({ error: "Product ID required" });
   }
 
   try {
-    const removed = await cartModel.removeFromCart(userId, productId);
+    const removed = await cartModel.removeFromCart(userId, productId, size);
     if (removed) {
       res.json({ message: "Product removed from cart" });
     } else {

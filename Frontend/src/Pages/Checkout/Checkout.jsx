@@ -119,9 +119,15 @@ function Checkout() {
 
         <div className="checkout-items">
           {cartItems.map((item) => (
-            <div className="checkout-item" key={item.id}>
+            <div
+              className="checkout-item"
+              key={`${item.id}-${item.size || "Unspecified"}`}
+            >
               <div className="item-details">
                 <span className="item-name">{item.name}</span>
+                <span className="item-size">
+                  Size: {item.size || "Unspecified"}
+                </span>
                 <span className="item-qty">Qty: {item.quantity}</span>
               </div>
               <span className="item-total">

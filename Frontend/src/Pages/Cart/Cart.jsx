@@ -45,15 +45,15 @@ function Cart() {
     fetchCart();
   }, [authLoading, isLoggedIn]);
 
-  const handleRemoveFromCart = async (productId) => {
+  const handleRemoveFromCart = async (productId, size) => {
     if (!isLoggedIn) {
-      setCartItems(removeGuestCartItem(productId));
+      setCartItems(removeGuestCartItem(productId, size));
       return;
     }
 
     try {
       const response = await fetch(
-        `http://localhost:3000/api/cart/${productId}`,
+        `http://localhost:3000/api/cart/${productId}?size=${encodeURIComponent(size || "Unspecified")}`,
         {
           method: "DELETE",
           credentials: "include",
@@ -62,7 +62,14 @@ function Cart() {
       if (!response.ok) {
         throw new Error("Failed to remove item from cart.");
       }
-      setCartItems((prev) => prev.filter((item) => item.id !== productId));
+      setCartItems((prev) =>
+        prev.filter(
+          (item) =>
+            item.id !== productId ||
+            String(item.size || "Unspecified") !==
+              String(size || "Unspecified"),
+        ),
+      );
     } catch (err) {
       setError(err.message);
     }
@@ -124,7 +131,7 @@ function Cart() {
           cartItems.map((product) => (
             <div
               className="cart-item"
-              key={product.id}
+              key={`${product.id}-${product.size || "Unspecified"}`}
               role="button"
               tabIndex={0}
               onClick={() => navigate(`/product/${product.id}`)}
@@ -155,6 +162,9 @@ function Cart() {
                   <span className="cart-item-unit-price">
                     {formatPrice(product.price)} each
                   </span>
+                  <span className="cart-item-size">
+                    Size: {product.size || "Unspecified"}
+                  </span>
                   <span className="cart-item-qty">Qty: {product.quantity}</span>
                 </div>
                 <p className="cart-item-hint">
@@ -166,7 +176,7 @@ function Cart() {
                     type="button"
                     onClick={(event) => {
                       event.stopPropagation();
-                      handleRemoveFromCart(product.id);
+                      handleRemoveFromCart(product.id, product.size);
                     }}
                   >
                     REMOVE

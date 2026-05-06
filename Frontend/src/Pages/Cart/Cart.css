@@ -94,6 +94,11 @@
   font-size: 0.95rem;
 }
 
+.cart-item-size {
+  font-weight: 600;
+  color: #111827;
+}
+
 .cart-item-hint {
   margin: 0;
   color: #6b7280;

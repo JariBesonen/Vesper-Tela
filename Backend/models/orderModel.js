@@ -17,7 +17,7 @@ exports.createOrderFromCart = async (userId) => {
 
     const cartResult = await client.query(
       `
-      SELECT p.id, p.name, p.price, c.quantity
+      SELECT p.id, p.name, p.price, c.quantity, c.size
       FROM cart c
       JOIN products p ON c.product_id = p.id
       WHERE c.user_id = $1
@@ -56,9 +56,9 @@ exports.createOrderFromCart = async (userId) => {
       await client.query(
         `
         INSERT INTO order_items
-          (order_id, product_id, product_name, unit_price, quantity, line_total)
+          (order_id, product_id, product_name, unit_price, quantity, line_total, size)
         VALUES
-          ($1, $2, $3, $4, $5, $6)
+          ($1, $2, $3, $4, $5, $6, $7)
         `,
         [
           order.id,
@@ -67,6 +67,7 @@ exports.createOrderFromCart = async (userId) => {
           unitPrice.toFixed(2),
           quantity,
           lineTotal.toFixed(2),
+          item.size || "Unspecified",
         ],
       );
     }
@@ -105,7 +106,8 @@ exports.getOrderHistory = async (userId) => {
             'productName', oi.product_name,
             'unitPrice', oi.unit_price,
             'quantity', oi.quantity,
-            'lineTotal', oi.line_total
+            'lineTotal', oi.line_total,
+            'size', oi.size
           )
           ORDER BY oi.id
         ) FILTER (WHERE oi.id IS NOT NULL),

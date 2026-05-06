@@ -22,8 +22,30 @@ const create = async () => {
         unit_price NUMERIC(10, 2) NOT NULL,
         quantity INTEGER NOT NULL DEFAULT 1,
         line_total NUMERIC(10, 2) NOT NULL,
+        size VARCHAR(20) NOT NULL DEFAULT 'Unspecified',
         created_at TIMESTAMP DEFAULT NOW()
       );
+    `);
+
+    await pool.query(`
+      ALTER TABLE order_items
+      ADD COLUMN IF NOT EXISTS size VARCHAR(20)
+    `);
+
+    await pool.query(`
+      UPDATE order_items
+      SET size = 'Unspecified'
+      WHERE size IS NULL OR BTRIM(size) = ''
+    `);
+
+    await pool.query(`
+      ALTER TABLE order_items
+      ALTER COLUMN size SET DEFAULT 'Unspecified'
+    `);
+
+    await pool.query(`
+      ALTER TABLE order_items
+      ALTER COLUMN size SET NOT NULL
     `);
 
     console.log("orders and order_items tables created (or already exist)");

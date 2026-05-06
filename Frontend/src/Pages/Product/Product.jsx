@@ -125,9 +125,9 @@ function Product() {
     setSuccessMessage("");
 
     if (!isLoggedIn) {
-      addGuestCartItem(product, quantity);
+      addGuestCartItem(product, quantity, selectedSize);
       setSuccessMessage(
-        `Added ${quantity} item${quantity > 1 ? "s" : ""} to cart as guest.`,
+        `Added ${quantity} item${quantity > 1 ? "s" : ""} in size ${selectedSize} to cart as guest.`,
       );
       return;
     }
@@ -149,7 +149,7 @@ function Product() {
       }
 
       setSuccessMessage(
-        `Added ${quantity} item${quantity > 1 ? "s" : ""} to cart.`,
+        `Added ${quantity} item${quantity > 1 ? "s" : ""} in size ${selectedSize} to cart.`,
       );
     } catch (err) {
       setError(err.message || "Unable to add product to cart.");

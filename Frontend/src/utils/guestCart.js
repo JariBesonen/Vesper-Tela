@@ -15,25 +15,39 @@ const normalizeQuantity = (value) => {
   return Math.max(1, Math.min(parsed, 99));
 };
 
+const normalizeSize = (value) => {
+  const size = String(value || "").trim();
+  return size || "Unspecified";
+};
+
+const getItemKey = (productId, size) =>
+  `${Number(productId)}::${normalizeSize(size)}`;
+
 const persist = (items) => {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
 };
 
 export const getGuestCartItems = () => {
   if (typeof window === "undefined") return [];
-  return safeParse(localStorage.getItem(STORAGE_KEY));
+  return safeParse(localStorage.getItem(STORAGE_KEY)).map((item) => ({
+    ...item,
+    size: normalizeSize(item?.size),
+  }));
 };
 
-export const addGuestCartItem = (product, quantity = 1) => {
+export const addGuestCartItem = (product, quantity = 1, size) => {
   const items = getGuestCartItems();
   const safeQuantity = normalizeQuantity(quantity);
+  const safeSize = normalizeSize(size);
   const id = Number(product?.id);
 
   if (!Number.isInteger(id) || id <= 0) {
     return items;
   }
 
-  const index = items.findIndex((item) => Number(item.id) === id);
+  const index = items.findIndex(
+    (item) => getItemKey(item.id, item.size) === getItemKey(id, safeSize),
+  );
 
   if (index >= 0) {
     items[index] = {
@@ -51,6 +65,7 @@ export const addGuestCartItem = (product, quantity = 1) => {
       category: product?.category || "shirts",
       image: product?.image || "",
       quantity: safeQuantity,
+      size: safeSize,
     });
   }
 
@@ -58,9 +73,11 @@ export const addGuestCartItem = (product, quantity = 1) => {
   return items;
 };
 
-export const removeGuestCartItem = (productId) => {
-  const id = Number(productId);
-  const items = getGuestCartItems().filter((item) => Number(item.id) !== id);
+export const removeGuestCartItem = (productId, size) => {
+  const itemKey = getItemKey(productId, size);
+  const items = getGuestCartItems().filter(
+    (item) => getItemKey(item.id, item.size) !== itemKey,
+  );
   persist(items);
   return items;
 };
@@ -81,6 +98,7 @@ export const mergeGuestCartIntoServerCart = async () => {
   for (const item of guestItems) {
     const productId = Number(item?.id);
     const quantity = normalizeQuantity(item?.quantity);
+    const size = normalizeSize(item?.size);
 
     if (!Number.isInteger(productId) || productId <= 0) {
       continue;
@@ -91,11 +109,11 @@ export const mergeGuestCartIntoServerCart = async () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ productId, quantity }),
+        body: JSON.stringify({ productId, quantity, size }),
       });
 
       if (response.ok) {
-        mergedIds.add(productId);
+        mergedIds.add(getItemKey(productId, size));
       }
     } catch {
       // Keep item in guest cart and continue merging other items.
@@ -103,7 +121,7 @@ export const mergeGuestCartIntoServerCart = async () => {
   }
 
   const remainingItems = guestItems.filter(
-    (item) => !mergedIds.has(Number(item?.id)),
+    (item) => !mergedIds.has(getItemKey(item?.id, item?.size)),
   );
   persist(remainingItems);
 
