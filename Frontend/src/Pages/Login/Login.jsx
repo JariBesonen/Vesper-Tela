@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { mergeGuestCartIntoServerCart } from "../../utils/guestCart.js";
 import "./Login.css";
 
@@ -80,6 +81,10 @@ function Login() {
         />
 
         <button type="submit">Login</button>
+
+        <p className="login-register-link">
+          Don&apos;t have an account? <Link to="/register">Create one</Link>
+        </p>
       </form>
     </div>
   );

@@ -3,7 +3,8 @@ import "./Register.css";
 
 function Register() {
   const [formData, setFormData] = useState({
-    username: "",
+    firstName: "",
+    lastName: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -32,8 +33,10 @@ function Register() {
         const res = await fetch("http://localhost:3000/api/auth/register", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
+          credentials: "include",
           body: JSON.stringify({
-            username: formData.username,
+            firstName: formData.firstName,
+            lastName: formData.lastName,
             email: formData.email,
             password: formData.password,
           }),
@@ -46,8 +49,8 @@ function Register() {
           return;
         }
 
-        alert("Account created successfully");
-        window.location.href = "/login";
+        alert("Account created. You are now logged in.");
+        window.location.href = "/";
       } catch (err) {
         console.error("Registration error:", err);
         alert("Registration failed");
@@ -62,9 +65,18 @@ function Register() {
 
         <input
           type="text"
-          name="username"
-          placeholder="Username"
-          value={formData.username}
+          name="firstName"
+          placeholder="First Name"
+          value={formData.firstName}
+          onChange={handleChange}
+          required
+        />
+
+        <input
+          type="text"
+          name="lastName"
+          placeholder="Last Name"
+          value={formData.lastName}
           onChange={handleChange}
           required
         />

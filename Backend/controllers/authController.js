@@ -1,6 +1,11 @@
 exports.session = (req, res) => {
   if (req.session && req.session.userId) {
-    res.json({ loggedIn: true, username: req.session.username });
+    res.json({
+      loggedIn: true,
+      username: req.session.username,
+      firstName: req.session.firstName,
+      lastName: req.session.lastName,
+    });
   } else {
     res.json({ loggedIn: false });
   }
@@ -33,8 +38,16 @@ exports.login = async (req, res) => {
     // Set session
     req.session.userId = user.id;
     req.session.username = user.username;
+    req.session.firstName = user.first_name;
+    req.session.lastName = user.last_name;
     // Respond with user info (no password)
-    res.json({ id: user.id, username: user.username, email: user.email });
+    res.json({
+      id: user.id,
+      username: user.username,
+      firstName: user.first_name,
+      lastName: user.last_name,
+      email: user.email,
+    });
   } catch (err) {
     console.error("LOGIN ERROR:", err, err.stack);
     res.status(500).json({ error: "Internal server error" });
@@ -44,28 +57,40 @@ const bcrypt = require("bcrypt");
 const authModel = require("../models/authModel");
 
 exports.register = async (req, res) => {
-  const { username, email, password } = req.body;
+  const { firstName, lastName, email, password } = req.body;
 
-  if (!username || !email || !password) {
+  if (!firstName || !lastName || !email || !password) {
     return res.status(400).json({ error: "Missing required fields" });
   }
 
   try {
-    const existing = await authModel.findByEmailOrUsername(email, username);
+    const existing = await authModel.findByEmail(email);
 
-    if (existing.length > 0) {
+    if (existing) {
       return res.status(409).json({ error: "User already exists" });
     }
 
     const hash = await bcrypt.hash(password, 10);
 
     const user = await authModel.createUser({
-      username,
+      firstName,
+      lastName,
       email,
       passwordHash: hash,
     });
 
-    return res.status(201).json({ username: user.username, email: user.email });
+    req.session.userId = user.id;
+    req.session.username = user.username;
+    req.session.firstName = user.first_name;
+    req.session.lastName = user.last_name;
+
+    return res.status(201).json({
+      id: user.id,
+      username: user.username,
+      firstName: user.first_name,
+      lastName: user.last_name,
+      email: user.email,
+    });
   } catch (err) {
     console.error("REGISTER ERROR:", err);
     return res.status(500).json({ error: "Internal server error" });

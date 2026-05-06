@@ -52,6 +52,23 @@
   background: #ddd;
 }
 
+.login-register-link {
+  margin: 0;
+  text-align: center;
+  color: #d1d5db;
+  font-size: 0.9rem;
+}
+
+.login-register-link a {
+  color: #ffffff;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.login-register-link a:hover {
+  color: #e5e7eb;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .login-form {
