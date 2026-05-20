@@ -1,4 +1,18 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
+import { useEffect } from "react";
+
+function ScrollToTop() {
+  const { pathname, search } = useLocation();
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname, search]);
+  return null;
+}
 //IMPORTED PAGES//
 import Home from "./Pages/Home/Home.jsx";
 import Cart from "./Pages/Cart/Cart.jsx";
@@ -20,6 +34,7 @@ function App() {
   return (
     <Router>
       <AuthProvider>
+        <ScrollToTop />
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />

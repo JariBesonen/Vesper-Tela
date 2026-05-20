@@ -11,6 +11,7 @@ function Cart() {
   const navigate = useNavigate();
   const { isLoggedIn, loading: authLoading } = useContext(AuthContext);
   const [cartItems, setCartItems] = useState([]);
+  const [suggestedProducts, setSuggestedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -44,6 +45,41 @@ function Cart() {
 
     fetchCart();
   }, [authLoading, isLoggedIn]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const fetchSuggestedProducts = async () => {
+      if (loading || cartItems.length > 0) {
+        return;
+      }
+
+      try {
+        const response = await fetch("http://localhost:3000/api/products");
+        if (!response.ok) {
+          return;
+        }
+
+        const data = await response.json();
+        const allProducts = Array.isArray(data) ? data : [];
+        const suggestions = allProducts.slice(0, 4);
+
+        if (!cancelled) {
+          setSuggestedProducts(suggestions);
+        }
+      } catch {
+        if (!cancelled) {
+          setSuggestedProducts([]);
+        }
+      }
+    };
+
+    fetchSuggestedProducts();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [loading, cartItems]);
 
   const handleRemoveFromCart = async (productId, size) => {
     if (!isLoggedIn) {
@@ -125,8 +161,46 @@ function Cart() {
   return (
     <div className="cart-page">
       <div className="cart-wrapper">
+        <h1 className="cart-page-heading">Your Cart</h1>
         {cartItems.length === 0 ? (
-          <div className="empty-cart">Your cart is empty.</div>
+          <div className="empty-cart-state">
+            <div className="empty-cart">Your cart is empty.</div>
+            {suggestedProducts.length > 0 && (
+              <section className="suggested-products-section">
+                <h2 className="suggested-products-heading">
+                  You may also like
+                </h2>
+                <div className="suggested-products-grid">
+                  {suggestedProducts.map((product) => (
+                    <div
+                      className="suggested-product-card"
+                      key={product.id}
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => navigate(`/product/${product.id}`)}
+                      onKeyDown={(event) => {
+                        if (event.key === "Enter" || event.key === " ") {
+                          event.preventDefault();
+                          navigate(`/product/${product.id}`);
+                        }
+                      }}
+                    >
+                      <img
+                        className="suggested-product-img"
+                        src={getProductImageSrc(product)}
+                        alt={product.name}
+                        loading="lazy"
+                      />
+                      <h3 className="suggested-product-name">{product.name}</h3>
+                      <p className="suggested-product-price">
+                        {formatPrice(product.price)}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+          </div>
         ) : (
           cartItems.map((product) => (
             <div

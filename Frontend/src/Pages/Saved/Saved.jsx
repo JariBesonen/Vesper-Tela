@@ -8,6 +8,7 @@ function Saved() {
   const navigate = useNavigate();
   const { isLoggedIn, loading: authLoading } = useContext(AuthContext);
   const [products, setProducts] = useState([]);
+  const [suggestedProducts, setSuggestedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -46,6 +47,41 @@ function Saved() {
 
     fetchSavedProducts();
   }, [authLoading, isLoggedIn]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const fetchSuggestedProducts = async () => {
+      if (loading || products.length > 0 || showLoginModal) {
+        return;
+      }
+
+      try {
+        const response = await fetch("http://localhost:3000/api/products");
+        if (!response.ok) {
+          return;
+        }
+
+        const data = await response.json();
+        const allProducts = Array.isArray(data) ? data : [];
+        const suggestions = allProducts.slice(0, 4);
+
+        if (!cancelled) {
+          setSuggestedProducts(suggestions);
+        }
+      } catch {
+        if (!cancelled) {
+          setSuggestedProducts([]);
+        }
+      }
+    };
+
+    fetchSuggestedProducts();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [loading, products, showLoginModal]);
 
   const formatPrice = (price) => {
     if (price === undefined || price === null || price === "") return "";
@@ -91,7 +127,7 @@ function Saved() {
         },
       );
       if (!response.ok) {
-        throw new Error("Failed to unsave product");
+        throw new Error("Failed to remove product from saved items");
       }
       // Remove from local state
       setProducts(products.filter((p) => p.id !== productId));
@@ -136,8 +172,46 @@ function Saved() {
         }}
       />
       <div className="saved-wrapper">
+        <h1 className="saved-page-heading">Saved Items</h1>
         {products.length === 0 ? (
-          <div>No saved products.</div>
+          <div className="saved-empty-state">
+            <div>No saved products.</div>
+            {suggestedProducts.length > 0 && (
+              <section className="suggested-products-section">
+                <h2 className="suggested-products-heading">
+                  You may also like
+                </h2>
+                <div className="suggested-products-grid">
+                  {suggestedProducts.map((product) => (
+                    <div
+                      className="suggested-product-card"
+                      key={product.id}
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => navigate(`/product/${product.id}`)}
+                      onKeyDown={(event) => {
+                        if (event.key === "Enter" || event.key === " ") {
+                          event.preventDefault();
+                          navigate(`/product/${product.id}`);
+                        }
+                      }}
+                    >
+                      <img
+                        className="suggested-product-img"
+                        src={getProductImageSrc(product)}
+                        alt={product.name}
+                        loading="lazy"
+                      />
+                      <h3 className="suggested-product-name">{product.name}</h3>
+                      <p className="suggested-product-price">
+                        {formatPrice(product.price)}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+          </div>
         ) : (
           products.map((product) => (
             <div
@@ -177,7 +251,7 @@ function Saved() {
                       handleUnsave(product.id);
                     }}
                   >
-                    UNSAVE
+                    REMOVE FROM SAVED
                   </button>
                 </div>
               </div>

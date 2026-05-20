@@ -1,42 +1,46 @@
 .mens-page {
-  margin-top: calc(var(--nav-height, 5vh) + var(--category-height, 5vh) + 1rem);
+  margin-top: calc(var(--nav-height) + var(--category-height));
   width: 100%;
   min-height: 100vh;
-  background-color: rgb(255, 255, 255);
+  background-color: #ffffff;
 
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
 
-  padding: 2rem 5rem;
+  padding: 0;
 }
 
 .mens-product-wrapper {
-  width: 80%;
-  aspect-ratio: 1 / 1;
-  border: 1px solid black;
+  width: 100%;
+  height: calc(100vh - var(--nav-height) - var(--category-height));
+  border: none;
+  border-right: 1px solid var(--line-color);
+  border-bottom: 1px solid var(--line-color);
   background-color: white;
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  margin: 0 auto;
   overflow: hidden;
   cursor: pointer;
 }
 
 .product-wrapper-save-icon {
   position: absolute;
-  right: 1rem;
-  top: 1rem;
+  right: 0.85rem;
+  top: 0.85rem;
   cursor: pointer;
-  font-size: 1.5rem;
   z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
 }
 
 .product-image {
   width: 100%;
-  height: 64%;
+  height: 88%;
   object-fit: contain;
   background-color: #ffffff;
   display: block;
@@ -46,8 +50,7 @@
 .product-price {
   display: block;
   width: 100%;
-  text-align: center;
-  margin: 0.35rem 0;
+  margin: 0;
 }
 
 .add-to-cart-btn {
@@ -73,7 +76,7 @@
 }
 
 .product-wrapper-save-icon.saved {
-  color: red;
+  color: #111111;
 }
 
 .product-info-wrapper {
@@ -82,80 +85,69 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  gap: 0.5rem;
-  padding: 1rem;
+  gap: 0.25rem;
+  padding: 0.85rem;
   min-height: auto;
-  background-color: white;
+  background-color: #ffffff;
+}
+
+.product-name {
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  color: #111111;
+  line-height: 1.25;
+}
+
+.product-price {
+  font-size: 0.64rem;
+  letter-spacing: 0.1em;
+  color: #5f5f5f;
 }
 
 /* Responsive Design */
 @media (max-width: 1024px) {
   .mens-page {
-    grid-template-columns: repeat(2, minmax(250px, 1fr));
-    padding: 2rem 3rem;
-    gap: 1.5rem;
-  }
-
-  .mens-product-wrapper {
-    width: 85%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 768px) {
   .mens-page {
-    grid-template-columns: repeat(2, minmax(220px, 1fr));
-    padding: 1rem 2rem;
-    gap: 1rem;
-  }
-
-  .mens-product-wrapper {
-    width: 90%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .product-wrapper-save-icon {
-    font-size: 1.3rem;
-    right: 0.8rem;
-    top: 0.8rem;
+    font-size: 1.03rem;
   }
 }
 
 @media (max-width: 480px) {
   .mens-page {
     grid-template-columns: 1fr;
-    padding: 1rem;
-    gap: 1rem;
-  }
-
-  .mens-product-wrapper {
-    width: 95%;
   }
 
   .product-wrapper-save-icon {
-    font-size: 1.2rem;
-    right: 0.5rem;
-    top: 0.5rem;
+    font-size: 0.98rem;
+    right: 0.65rem;
+    top: 0.65rem;
   }
 }
 
 @media (max-width: 350px) {
   .mens-page {
-    padding: 0.5rem;
-    gap: 0.5rem;
-  }
-
-  .mens-product-wrapper {
-    width: 98%;
+    margin-top: calc(var(--nav-height) + var(--category-height));
   }
 
   .product-wrapper-save-icon {
-    font-size: 1rem;
-    right: 0.3rem;
-    top: 0.3rem;
+    font-size: 0.9rem;
+    right: 0.5rem;
+    top: 0.5rem;
   }
 
-  .product-info-wrapper {
-    height: 15%;
+  .product-name,
+  .product-price {
+    font-size: 0.6rem;
   }
 }

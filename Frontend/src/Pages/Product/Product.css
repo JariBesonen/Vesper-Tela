@@ -1,7 +1,7 @@
 .product-page {
   margin-top: calc(var(--nav-height, 5vh) + 2rem);
   min-height: 100vh;
-  padding: 2rem;
+  padding: 2rem 2rem 2rem 1.35rem;
   background: linear-gradient(180deg, #f6f4ef 0%, #ffffff 48%, #f2f7fb 100%);
 }
 
@@ -14,13 +14,11 @@
   grid-template-columns: 1.05fr 1fr;
   gap: 2rem;
   padding: 1.75rem;
-  position: relative;
 }
 
 .product-back-btn {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
+  display: inline-block;
+  margin-bottom: 1rem;
   border: 1px solid #0f172a;
   background: #ffffff;
   padding: 0.5rem 0.8rem;
@@ -34,7 +32,7 @@
 }
 
 .product-visual-column {
-  background: radial-gradient(circle at 32% 28%, #f8f3ea 0%, #f5f7fb 46%, #ecf4ff 100%);
+  background: #ffffff;
   border: 1px solid #e2e8f0;
   min-height: 500px;
   display: flex;
@@ -122,6 +120,10 @@
 
 .product-add-btn:hover {
   background: #083e55;
+}
+
+.product-add-btn.added {
+  background: #166534;
 }
 
 .product-success-msg {

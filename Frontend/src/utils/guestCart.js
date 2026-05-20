@@ -1,4 +1,5 @@
 const STORAGE_KEY = "vesper_guest_cart_v1";
+const MAX_CART_ITEM_QUANTITY = 3;
 
 const safeParse = (raw) => {
   try {
@@ -12,7 +13,7 @@ const safeParse = (raw) => {
 const normalizeQuantity = (value) => {
   const parsed = Number(value);
   if (!Number.isInteger(parsed)) return 1;
-  return Math.max(1, Math.min(parsed, 99));
+  return Math.max(1, Math.min(parsed, MAX_CART_ITEM_QUANTITY));
 };
 
 const normalizeSize = (value) => {

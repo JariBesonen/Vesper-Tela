@@ -29,7 +29,7 @@ function Navbar() {
         </li>
         <li>
           <a href="/women" className="nav-link">
-            Woman
+            Women
           </a>
         </li>
       </ul>
@@ -44,8 +44,17 @@ function Navbar() {
             type="button"
             className="search-btn"
             onClick={handleOpenSearch}
+            aria-label="Open search"
           >
-            SEARCH
+            <svg
+              className="search-icon"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <circle cx="11" cy="11" r="6.5" />
+              <line x1="16" y1="16" x2="21" y2="21" />
+            </svg>
           </button>
         </li>
         <li>

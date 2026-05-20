@@ -166,6 +166,10 @@ function Search() {
     setQuery("");
   };
 
+  const clearQuery = () => {
+    setQuery("");
+  };
+
   if (!open) return null;
 
   return (
@@ -174,64 +178,83 @@ function Search() {
         className="search-modal"
         onClick={(event) => event.stopPropagation()}
       >
-        <div className="search-modal-header">
-          <h2>Search Products</h2>
-          <button
-            type="button"
-            className="search-close-btn"
-            onClick={closeModal}
-          >
-            Close
-          </button>
-        </div>
-        <div className="search-input-row">
-          <input
-            type="text"
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            onKeyDown={handleInputKeyDown}
-            placeholder="Try: black pants, coffee heels, maroon shirt"
-          />
-          <button type="button" onClick={handleSearch} disabled={!query.trim()}>
-            Search
-          </button>
-        </div>
+        <button type="button" className="search-close-btn" onClick={closeModal}>
+          ×
+        </button>
 
-        {loading && <p>Loading product index...</p>}
-        {error && <p className="search-error">{error}</p>}
-
-        {!loading && !error && query.trim() && similarProducts.length === 0 && (
-          <p>No similar products found.</p>
-        )}
-
-        {similarProducts.length > 0 && (
-          <div className="similar-products-list">
-            {similarProducts.map((product) => (
-              <button
-                type="button"
-                key={product.id ?? `${product.name}-${product.category}`}
-                className="similar-product-item"
-                onClick={() => {
-                  navigate(getProductRoute(product));
-                  setOpen(false);
-                }}
+        <div className="search-content">
+          <div className="search-input-row">
+            <input
+              type="text"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              onKeyDown={handleInputKeyDown}
+              placeholder="SEARCH"
+            />
+            <button
+              type="button"
+              className="search-clear-btn"
+              onClick={clearQuery}
+              disabled={!query}
+            >
+              CLEAR
+            </button>
+            <button
+              type="button"
+              className="search-icon-btn"
+              onClick={handleSearch}
+              disabled={!query.trim()}
+              aria-label="Submit search"
+            >
+              <svg
+                className="search-submit-icon"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+                focusable="false"
               >
-                <img
-                  className="similar-product-image"
-                  src={getProductImageSrc(product)}
-                  alt={product.name}
-                />
-                <span className="similar-product-content">
-                  <span className="similar-product-name">{product.name}</span>
-                  <span className="similar-product-meta">
-                    {String(product.gender || "men")} ·{" "}
-                    {String(product.category || "shirts")}
-                  </span>
-                </span>
-              </button>
-            ))}
+                <circle cx="11" cy="11" r="6.5" />
+                <line x1="16" y1="16" x2="21" y2="21" />
+              </svg>
+            </button>
           </div>
-        )}
+
+          {loading && <p>Loading product index...</p>}
+          {error && <p className="search-error">{error}</p>}
+
+          {!loading &&
+            !error &&
+            query.trim() &&
+            similarProducts.length === 0 && <p>No similar products found.</p>}
+
+          {similarProducts.length > 0 && (
+            <div className="similar-products-list">
+              {similarProducts.map((product) => (
+                <button
+                  type="button"
+                  key={product.id ?? `${product.name}-${product.category}`}
+                  className="similar-product-item"
+                  onClick={() => {
+                    navigate(getProductRoute(product));
+                    setOpen(false);
+                  }}
+                >
+                  <img
+                    className="similar-product-image"
+                    src={getProductImageSrc(product)}
+                    alt={product.name}
+                  />
+                  <span className="similar-product-content">
+                    <span className="similar-product-name">{product.name}</span>
+                    <span className="similar-product-meta">
+                      {String(product.gender || "men")} ·{" "}
+                      {String(product.category || "shirts")}
+                    </span>
+                  </span>
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

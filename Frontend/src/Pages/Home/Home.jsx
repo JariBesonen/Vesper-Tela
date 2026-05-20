@@ -22,6 +22,14 @@ function Home() {
           muted
           playsInline
           preload="metadata"
+          onClick={() => navigate("/women")}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              navigate("/women");
+            }
+          }}
         >
           <source src={heroVideo} type="video/mp4" />
         </video>
@@ -40,7 +48,7 @@ function Home() {
           className="woman-product-promo"
           style={{ backgroundImage: `url(${womenShoesCtaImage})` }}
         >
-          <span className="woman-promo-label">Womans Shoes</span>
+          <span className="woman-promo-label">Women Shoes</span>
           <span className="woman-promo-btn">SHOP SHOES</span>
         </Link>
         <Link
@@ -48,7 +56,7 @@ function Home() {
           className="woman-product-promo"
           style={{ backgroundImage: `url(${womenShirtsCtaImage})` }}
         >
-          <span className="woman-promo-label">Womans Shirts</span>
+          <span className="woman-promo-label">Women Shirts</span>
           <span className="woman-promo-btn">SHOP SHIRTS</span>
         </Link>
         <Link
@@ -56,13 +64,21 @@ function Home() {
           className="woman-product-promo"
           style={{ backgroundImage: `url(${womenPantsCtaImage})` }}
         >
-          <span className="woman-promo-label">Womans Pants</span>
+          <span className="woman-promo-label">Women Pants</span>
           <span className="woman-promo-btn">SHOP PANTS</span>
         </Link>
       </section>
       <section
         className="men-section"
         style={{ backgroundImage: `url(${menSectionBackground})` }}
+        onClick={() => navigate("/men")}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            navigate("/men");
+          }
+        }}
       >
         <div className="men-section-overlay" aria-hidden="true" />
         <div className="men-cta-wrapper">
@@ -79,7 +95,7 @@ function Home() {
           className="mens-new-arrival-product-promo"
           style={{ backgroundImage: `url(${menShoesCtaImage})` }}
         >
-          <span className="mens-new-arrival-label">Mens Shoes</span>
+          <span className="mens-new-arrival-label">Men Shoes</span>
           <span className="mens-new-arrival-btn">SHOP SHOES</span>
         </Link>
         <Link
@@ -88,7 +104,7 @@ function Home() {
           className="mens-new-arrival-product-promo"
           style={{ backgroundImage: `url(${menShirtsCtaImage})` }}
         >
-          <span className="mens-new-arrival-label">Mens Shirts</span>
+          <span className="mens-new-arrival-label">Men Shirts</span>
           <span className="mens-new-arrival-btn">SHOP SHIRTS</span>
         </Link>
         <Link
@@ -97,7 +113,7 @@ function Home() {
           className="mens-new-arrival-product-promo"
           style={{ backgroundImage: `url(${menPantsCtaImage})` }}
         >
-          <span className="mens-new-arrival-label">Mens Pants</span>
+          <span className="mens-new-arrival-label">Men Pants</span>
           <span className="mens-new-arrival-btn">SHOP PANTS</span>
         </Link>
       </section>

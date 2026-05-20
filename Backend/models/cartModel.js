@@ -1,4 +1,5 @@
 const pool = require("../config/db");
+const MAX_CART_ITEM_QUANTITY = 3;
 
 const normalizeSize = (value) => {
   const size = String(value || "").trim();
@@ -21,7 +22,7 @@ exports.addToCart = async (userId, productId, quantity = 1, size) => {
   const numericQuantity = Number(quantity);
   const safeQuantity =
     Number.isInteger(numericQuantity) && numericQuantity > 0
-      ? numericQuantity
+      ? Math.min(numericQuantity, MAX_CART_ITEM_QUANTITY)
       : 1;
   const safeSize = normalizeSize(size);
 
@@ -29,7 +30,7 @@ exports.addToCart = async (userId, productId, quantity = 1, size) => {
     INSERT INTO cart (user_id, product_id, quantity, size)
     VALUES ($1, $2, $3, $4)
     ON CONFLICT (user_id, product_id, size)
-    DO UPDATE SET quantity = cart.quantity + EXCLUDED.quantity
+    DO UPDATE SET quantity = LEAST($5, cart.quantity + EXCLUDED.quantity)
     RETURNING quantity, size
   `;
   const result = await pool.query(query, [
@@ -37,6 +38,7 @@ exports.addToCart = async (userId, productId, quantity = 1, size) => {
     productId,
     safeQuantity,
     safeSize,
+    MAX_CART_ITEM_QUANTITY,
   ]);
   return result.rows[0];
 };

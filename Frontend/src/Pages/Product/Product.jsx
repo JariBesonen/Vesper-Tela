@@ -1,7 +1,7 @@
 import { useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext.jsx";
-import { addGuestCartItem } from "../../utils/guestCart.js";
+import { addGuestCartItem, getGuestCartItems } from "../../utils/guestCart.js";
 import "./Product.css";
 
 const SIZE_OPTIONS = {
@@ -9,6 +9,7 @@ const SIZE_OPTIONS = {
   pants: ["28", "30", "32", "34", "36"],
   shoes: ["7", "8", "9", "10", "11", "12"],
 };
+const MAX_CART_ITEM_QUANTITY = 3;
 
 const normalizeCategory = (value) => {
   const category = String(value || "").toLowerCase();
@@ -63,6 +64,7 @@ function Product() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [addedToCart, setAddedToCart] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -104,6 +106,49 @@ function Product() {
     }
   }, [sizeOptions]);
 
+  useEffect(() => {
+    let cancelled = false;
+
+    const syncAddedState = async () => {
+      if (!product?.id || authLoading) return;
+
+      if (!isLoggedIn) {
+        const guestItems = getGuestCartItems();
+        const inGuestCart = guestItems.some(
+          (item) => Number(item.id) === Number(product.id),
+        );
+        if (!cancelled) setAddedToCart(inGuestCart);
+        return;
+      }
+
+      try {
+        const response = await fetch("http://localhost:3000/api/cart", {
+          credentials: "include",
+        });
+
+        if (!response.ok) {
+          if (!cancelled) setAddedToCart(false);
+          return;
+        }
+
+        const data = await response.json();
+        const inUserCart =
+          Array.isArray(data) &&
+          data.some((item) => Number(item.id) === Number(product.id));
+
+        if (!cancelled) setAddedToCart(inUserCart);
+      } catch {
+        if (!cancelled) setAddedToCart(false);
+      }
+    };
+
+    syncAddedState();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [authLoading, isLoggedIn, product?.id]);
+
   const formatPrice = (price) => {
     if (price === undefined || price === null || price === "") return "";
     const numberPrice = Number(price);
@@ -114,7 +159,7 @@ function Product() {
   const handleQuantityChange = (nextValue) => {
     const parsed = Number(nextValue);
     if (!Number.isInteger(parsed)) return;
-    setQuantity(Math.max(1, Math.min(parsed, 99)));
+    setQuantity(Math.max(1, Math.min(parsed, MAX_CART_ITEM_QUANTITY)));
   };
 
   const handleAddToCart = async () => {
@@ -129,6 +174,10 @@ function Product() {
       setSuccessMessage(
         `Added ${quantity} item${quantity > 1 ? "s" : ""} in size ${selectedSize} to cart as guest.`,
       );
+      setAddedToCart(true);
+      setTimeout(() => {
+        setSuccessMessage("");
+      }, 2000);
       return;
     }
 
@@ -151,6 +200,10 @@ function Product() {
       setSuccessMessage(
         `Added ${quantity} item${quantity > 1 ? "s" : ""} in size ${selectedSize} to cart.`,
       );
+      setAddedToCart(true);
+      setTimeout(() => {
+        setSuccessMessage("");
+      }, 2000);
     } catch (err) {
       setError(err.message || "Unable to add product to cart.");
     }
@@ -170,15 +223,14 @@ function Product() {
 
   return (
     <div className="product-page">
+      <button
+        className="product-back-btn"
+        type="button"
+        onClick={() => navigate(-1)}
+      >
+        Back
+      </button>
       <div className="product-detail-card">
-        <button
-          className="product-back-btn"
-          type="button"
-          onClick={() => navigate(-1)}
-        >
-          Back
-        </button>
-
         <div className="product-visual-column">
           <img
             className="product-detail-image"
@@ -222,7 +274,7 @@ function Product() {
                 id="quantity-input"
                 type="number"
                 min="1"
-                max="99"
+                max={MAX_CART_ITEM_QUANTITY}
                 value={quantity}
                 onChange={(event) => handleQuantityChange(event.target.value)}
               />
@@ -236,11 +288,11 @@ function Product() {
           </div>
 
           <button
-            className="product-add-btn"
+            className={`product-add-btn${addedToCart ? " added" : ""}`}
             type="button"
             onClick={handleAddToCart}
           >
-            Add to cart
+            {addedToCart ? "Added to Cart ✓" : "Add to Cart"}
           </button>
 
           {successMessage && (

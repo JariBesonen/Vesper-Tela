@@ -22,15 +22,16 @@ main {
   flex-direction: column;
   width: 100%;
   min-height: 100vh;
+  gap: 4rem;
 }
 
 /* HERO SECTION */
 .hero-section {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - var(--nav-height));
   background-color: white;
-  margin-top: 5vh;
+  margin-top: var(--nav-height);
   overflow: hidden;
 }
 
@@ -41,66 +42,72 @@ main {
   height: 100%;
   object-fit: cover;
   z-index: 0;
+  cursor: pointer;
+  pointer-events: auto;
 }
 
 .hero-video-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.2));
+  background: linear-gradient(
+    to top,
+    rgba(255, 255, 255, 0.38),
+    rgba(255, 255, 255, 0.08)
+  );
   z-index: 1;
+  pointer-events: none;
 }
 
 .hero-section-cta-wrapper {
   position: absolute;
-  bottom: 5vh;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 2.2rem;
+  left: 2.2rem;
   z-index: 2;
-
-  width: 15rem;
-  height: 8rem;
-
+  width: auto;
+  height: auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
+  align-items: flex-start;
+  pointer-events: none;
+  gap: 0.55rem;
 }
 
 .hero-section-cta-wrapper span {
-  font-size: 1.5rem;
-  color: white;
+  font-size: 0.74rem;
+  color: #111111;
+  letter-spacing: 0.12em;
 }
 
 .hero-section-cta-wrapper button {
-  width: 8rem;
-  height: 2.5rem;
-  background-color: black;
-  color: white;
-  border: none;
+  width: auto;
+  height: auto;
+  padding: 0.5rem 0.9rem;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #111111;
+  border: 1px solid #111111;
   border-radius: 0;
-  font-size: 1rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
   cursor: pointer;
+  pointer-events: auto;
 }
 
 /* WOMAN SECTION */
 .woman-section {
   width: 100%;
-  min-height: 70vh;
-  background-color: black;
-  color: white;
-
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  gap: 3rem;
-  padding: 2rem 1rem;
+  min-height: 86vh;
+  background-color: #ffffff;
+  color: #111111;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  row-gap: 2rem;
+  column-gap: 2rem;
+  padding: 0;
 }
 
 .woman-product-promo {
-  width: min(28%, 24rem);
-  min-width: 14rem;
-  min-height: 28rem;
+  width: 100%;
+  min-height: 86vh;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -111,8 +118,8 @@ main {
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-end;
-  gap: 0.75rem;
-  padding: 1.25rem;
+  gap: 0.45rem;
+  padding: 1.4rem;
   isolation: isolate;
 }
 
@@ -120,34 +127,34 @@ main {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.68), rgba(0, 0, 0, 0.12));
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0));
   z-index: -1;
 }
 
 .woman-promo-label {
-  font-size: 1.4rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
 .woman-promo-btn {
   width: fit-content;
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.8);
   border-radius: 0;
-  background-color: white;
-  color: black;
-  padding: 0.65rem 1rem;
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  background-color: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  padding: 0.42rem 0.74rem;
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
   cursor: pointer;
 }
 
 /* MEN SECTION */
 .men-section {
   width: 100%;
-  height: 100vh;
+  height: 92vh;
   background-color: white;
   background-size: cover;
   background-position: center;
@@ -158,55 +165,49 @@ main {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .men-section-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.15));
+  background: linear-gradient(
+    to top,
+    rgba(255, 255, 255, 0.3),
+    rgba(255, 255, 255, 0.06)
+  );
   z-index: 1;
 }
 
 .men-cta-wrapper {
   position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 2.2rem;
+  left: 2.2rem;
   z-index: 2;
-
-  width: 15rem;
-  height: 8rem;
-
+  width: auto;
+  height: auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
+  align-items: flex-start;
+  gap: 0.55rem;
 }
 
 .men-cta-wrapper span {
-  font-size: 1.5rem;
-  color: white;
-}
-
-.men-cta-wrapper button {
-  width: 8rem;
-  height: 2.5rem;
-  background-color: black;
-  color: white;
-  border: none;
-  border-radius: 0;
-  font-size: 1rem;
-  cursor: pointer;
+  font-size: 0.74rem;
+  color: #111111;
+  letter-spacing: 0.12em;
 }
 
 .men-shop-now-link {
-  width: 8rem;
-  height: 2.5rem;
-  background-color: black;
-  color: white;
-  border: none;
+  width: auto;
+  height: auto;
+  background-color: rgba(255, 255, 255, 0.9);
+  color: #111111;
+  border: 1px solid #111111;
+  padding: 0.5rem 0.9rem;
   border-radius: 0;
-  font-size: 1rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
   cursor: pointer;
   text-decoration: none;
   display: inline-flex;
@@ -217,21 +218,19 @@ main {
 /* MEN'S NEW ARRIVALS SECTION */
 .mens-new-arrivals-section {
   width: 100%;
-  min-height: 70vh;
-  background-color: black;
-  color: white;
-  gap: 3rem;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem 1rem;
+  min-height: 86vh;
+  background-color: #ffffff;
+  color: #111111;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  row-gap: 2rem;
+  column-gap: 2rem;
+  padding: 0;
 }
 
 .mens-new-arrival-product-promo {
-  width: min(28%, 24rem);
-  min-width: 14rem;
-  min-height: 28rem;
+  width: 100%;
+  min-height: 86vh;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -242,8 +241,8 @@ main {
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-end;
-  gap: 0.75rem;
-  padding: 1.25rem;
+  gap: 0.45rem;
+  padding: 1.4rem;
   isolation: isolate;
 }
 
@@ -251,216 +250,172 @@ main {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.68), rgba(0, 0, 0, 0.12));
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0));
   z-index: -1;
 }
 
 .mens-new-arrival-label {
-  font-size: 1.4rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
 .mens-new-arrival-btn {
   width: fit-content;
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 0.8);
   border-radius: 0;
-  background-color: white;
-  color: black;
-  padding: 0.65rem 1rem;
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  background-color: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  padding: 0.42rem 0.74rem;
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
   cursor: pointer;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
   .hero-section-cta-wrapper {
-    width: 12rem;
-    height: 6rem;
-    bottom: 3vh;
+    bottom: 1.2rem;
+    left: 1.2rem;
   }
 
   .hero-section-cta-wrapper span {
-    font-size: 1.2rem;
+    font-size: 0.66rem;
   }
 
   .hero-section-cta-wrapper button {
-    width: 6rem;
-    height: 2rem;
-    font-size: 0.9rem;
+    font-size: 0.58rem;
   }
 
   .woman-section {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     min-height: auto;
-    gap: 2rem;
-    padding: 2rem 1rem;
+    row-gap: 2rem;
+    column-gap: 2rem;
   }
 
   .woman-product-promo {
-    width: min(46%, 20rem);
-    min-height: 22rem;
+    min-height: 64vh;
   }
 
   .men-section {
-    height: 70vh;
+    height: 72vh;
   }
 
   .men-cta-wrapper {
-    width: 12rem;
-    height: 6rem;
+    bottom: 1.2rem;
+    left: 1.2rem;
   }
 
   .men-cta-wrapper span {
-    font-size: 1.2rem;
-  }
-
-  .men-cta-wrapper button {
-    width: 6rem;
-    height: 2rem;
-    font-size: 0.9rem;
+    font-size: 0.66rem;
   }
 
   .mens-new-arrivals-section {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     min-height: auto;
-    gap: 2rem;
-    padding: 2rem 1rem;
+    row-gap: 2rem;
+    column-gap: 2rem;
   }
 
   .mens-new-arrival-product-promo {
-    width: min(46%, 20rem);
-    min-height: 22rem;
+    min-height: 64vh;
   }
 }
 
 @media (max-width: 480px) {
   .hero-section-cta-wrapper {
-    width: 10rem;
-    height: 5rem;
+    left: 0.8rem;
+    bottom: 0.8rem;
   }
 
   .hero-section-cta-wrapper span {
-    font-size: 1rem;
+    font-size: 0.6rem;
   }
 
   .hero-section-cta-wrapper button {
-    width: 5rem;
-    height: 1.8rem;
-    font-size: 0.8rem;
+    font-size: 0.54rem;
+    padding: 0.36rem 0.56rem;
   }
 
   .woman-section {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    height: auto;
-    min-height: 60vh;
-    gap: 1.5rem;
-    padding: 1.5rem;
+    grid-template-columns: 1fr;
+    min-height: auto;
   }
 
   .woman-product-promo {
-    width: min(46%, 18rem);
-    min-height: 20rem;
+    min-height: 72vh;
   }
 
   .men-section {
-    height: 60vh;
+    height: 64vh;
   }
 
   .men-cta-wrapper {
-    width: 10rem;
-    height: 5rem;
+    left: 0.8rem;
+    bottom: 0.8rem;
   }
 
   .men-cta-wrapper span {
-    font-size: 1rem;
-  }
-
-  .men-cta-wrapper button {
-    width: 5rem;
-    height: 1.8rem;
-    font-size: 0.8rem;
+    font-size: 0.6rem;
   }
 
   .mens-new-arrivals-section {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    height: auto;
-    min-height: 60vh;
-    gap: 1.5rem;
-    padding: 1.5rem;
+    grid-template-columns: 1fr;
+    min-height: auto;
   }
 
   .mens-new-arrival-product-promo {
-    width: min(46%, 18rem);
-    min-height: 20rem;
+    min-height: 72vh;
   }
 }
 
 @media (max-width: 350px) {
   .hero-section-cta-wrapper {
-    width: 8rem;
-    height: 4rem;
-    bottom: 2vh;
+    left: 0.6rem;
+    bottom: 0.6rem;
   }
 
   .hero-section-cta-wrapper span {
-    font-size: 0.9rem;
+    font-size: 0.5rem;
   }
 
   .hero-section-cta-wrapper button {
-    width: 4rem;
-    height: 1.5rem;
-    font-size: 0.7rem;
+    width: auto;
+    height: auto;
+    font-size: 0.46rem;
     line-height: 1.2;
-    padding: 0.4rem 0.5rem;
+    padding: 0.28rem 0.45rem;
   }
 
   .woman-section {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 1rem;
-    gap: 1rem;
     min-height: auto;
   }
 
   .woman-product-promo {
-    width: min(92%, 18rem);
-    min-height: 18rem;
+    min-height: 60vh;
   }
 
   .men-section {
-    height: 50vh;
+    height: 56vh;
   }
 
   .men-cta-wrapper {
-    width: 8rem;
-    height: 4rem;
+    left: 0.6rem;
+    bottom: 0.6rem;
   }
 
   .men-cta-wrapper span {
-    font-size: 0.9rem;
-  }
-
-  .men-cta-wrapper button {
-    width: 4rem;
-    height: 1.5rem;
-    font-size: 0.7rem;
+    font-size: 0.5rem;
   }
 
   .mens-new-arrivals-section {
-    padding: 0.5rem;
-    gap: 0.5rem;
     min-height: 50vh;
   }
 
   .mens-new-arrival-product-promo {
-    width: 92%;
-    min-height: 18rem;
+    min-height: 60vh;
   }
 }
