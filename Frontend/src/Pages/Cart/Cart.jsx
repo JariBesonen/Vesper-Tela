@@ -9,7 +9,8 @@ import {
 
 function Cart() {
   const navigate = useNavigate();
-  const { isLoggedIn, loading: authLoading } = useContext(AuthContext);
+  const { isLoggedIn, loading: authLoading, refreshCartCount } =
+    useContext(AuthContext);
   const [cartItems, setCartItems] = useState([]);
   const [suggestedProducts, setSuggestedProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -84,6 +85,7 @@ function Cart() {
   const handleRemoveFromCart = async (productId, size) => {
     if (!isLoggedIn) {
       setCartItems(removeGuestCartItem(productId, size));
+      refreshCartCount();
       return;
     }
 
@@ -106,6 +108,7 @@ function Cart() {
               String(size || "Unspecified"),
         ),
       );
+      refreshCartCount();
     } catch (err) {
       setError(err.message);
     }

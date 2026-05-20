@@ -63,3 +63,44 @@ exports.removeCart = async (req, res) => {
     res.status(500).json({ error: "Failed to remove product from cart" });
   }
 };
+
+exports.updateCart = async (req, res) => {
+  const userId = req.session.userId;
+  if (!userId) {
+    return res.status(401).json({ error: "Not authenticated" });
+  }
+
+  const { productId } = req.params;
+  const { quantity, size } = req.body;
+
+  if (!productId) {
+    return res.status(400).json({ error: "Product ID required" });
+  }
+
+  const numericQuantity = Number(quantity);
+  if (!Number.isInteger(numericQuantity) || numericQuantity < 1) {
+    return res.status(400).json({ error: "Quantity must be at least 1" });
+  }
+
+  try {
+    const updated = await cartModel.updateCartQuantity(
+      userId,
+      productId,
+      numericQuantity,
+      size,
+    );
+
+    if (!updated) {
+      return res.status(404).json({ error: "Product not found in cart" });
+    }
+
+    return res.json({
+      message: "Cart quantity updated",
+      quantity: updated.quantity,
+      size: updated.size,
+    });
+  } catch (err) {
+    console.error("UPDATE CART ERROR:", err);
+    return res.status(500).json({ error: "Failed to update cart quantity" });
+  }
+};

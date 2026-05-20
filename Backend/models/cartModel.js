@@ -52,3 +52,27 @@ exports.removeFromCart = async (userId, productId, size) => {
   const result = await pool.query(query, [userId, productId, safeSize]);
   return result.rowCount > 0;
 };
+
+exports.updateCartQuantity = async (userId, productId, quantity, size) => {
+  const safeSize = normalizeSize(size);
+  const numericQuantity = Number(quantity);
+  const safeQuantity =
+    Number.isInteger(numericQuantity) && numericQuantity > 0
+      ? Math.min(numericQuantity, MAX_CART_ITEM_QUANTITY)
+      : 1;
+
+  const query = `
+    UPDATE cart
+    SET quantity = $4
+    WHERE user_id = $1 AND product_id = $2 AND size = $3
+    RETURNING quantity, size
+  `;
+  const result = await pool.query(query, [
+    userId,
+    productId,
+    safeSize,
+    safeQuantity,
+  ]);
+
+  return result.rows[0] || null;
+};

@@ -3,7 +3,7 @@ import Logout from "../Logout/Logout.jsx";
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContext.jsx";
 function Navbar() {
-  const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn, setIsLoggedIn, cartCount } = useContext(AuthContext);
 
   function handleLogin(e) {
     e.preventDefault();
@@ -60,6 +60,7 @@ function Navbar() {
         <li>
           <a href="/cart" className="nav-link">
             Cart
+            {cartCount > 0 && <span className="cart-count-badge">{cartCount}</span>}
           </a>
         </li>
         {isLoggedIn && (

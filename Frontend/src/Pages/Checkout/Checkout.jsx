@@ -11,6 +11,14 @@ function Checkout() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [processing, setProcessing] = useState(false);
+  const [toast, setToast] = useState(null);
+
+  const showToast = (message, type = "info") => {
+    setToast({ message, type });
+    setTimeout(() => {
+      setToast(null);
+    }, 1000);
+  };
 
   useEffect(() => {
     if (authLoading) return;
@@ -62,8 +70,10 @@ function Checkout() {
         clearGuestCart();
       }
 
-      alert("Thank you for your purchase!");
-      navigate("/");
+      showToast("Thank you for your purchase!", "success");
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
     } catch (err) {
       setError(err.message || "Payment failed. Please try again.");
       setProcessing(false);
@@ -108,6 +118,11 @@ function Checkout() {
 
   return (
     <div className="checkout-page">
+      {toast && (
+        <div className={`checkout-toast ${toast.type}`} role="status" aria-live="polite">
+          {toast.message}
+        </div>
+      )}
       <div className="checkout-container">
         <h2>Order Summary</h2>
         {!isLoggedIn && (

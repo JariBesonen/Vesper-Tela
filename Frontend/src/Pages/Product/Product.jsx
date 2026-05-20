@@ -1,7 +1,13 @@
 import { useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext.jsx";
-import { addGuestCartItem, getGuestCartItems } from "../../utils/guestCart.js";
+import {
+  addGuestCartItem,
+  getGuestCartItems,
+  removeGuestCartItem,
+  updateGuestCartItemQuantity,
+} from "../../utils/guestCart.js";
+import CartPreview from "../../Components/CartPreview/CartPreview.jsx";
 import "./Product.css";
 
 const SIZE_OPTIONS = {
@@ -54,17 +60,36 @@ const getShortDescription = (product) => {
   return `${name} delivers a polished look with breathable comfort and an elevated fit you can wear all season.`;
 };
 
+const mapCartItemsForPreview = (items) =>
+  (Array.isArray(items) ? items : []).map((item) => ({
+    id: item.id,
+    size: item.size || "Unspecified",
+    name: item.name,
+    image: getProductImageSrc(item),
+    price: Number(item.price || 0),
+    quantity: Number(item.quantity || 0),
+  }));
+
+const getSubtotal = (items) =>
+  (Array.isArray(items) ? items : []).reduce(
+    (sum, item) => sum + Number(item.price || 0) * Number(item.quantity || 0),
+    0,
+  );
+
 function Product() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { isLoggedIn, loading: authLoading } = useContext(AuthContext);
+  const { isLoggedIn, loading: authLoading, refreshCartCount } =
+    useContext(AuthContext);
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
   const [addedToCart, setAddedToCart] = useState(false);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [previewItem, setPreviewItem] = useState([]);
+  const [cartSubtotal, setCartSubtotal] = useState(0);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -167,17 +192,14 @@ function Product() {
     if (authLoading) return;
 
     setError("");
-    setSuccessMessage("");
 
     if (!isLoggedIn) {
-      addGuestCartItem(product, quantity, selectedSize);
-      setSuccessMessage(
-        `Added ${quantity} item${quantity > 1 ? "s" : ""} in size ${selectedSize} to cart as guest.`,
-      );
+      const updatedItems = addGuestCartItem(product, quantity, selectedSize);
+      setPreviewItem(mapCartItemsForPreview(updatedItems));
+      setCartSubtotal(getSubtotal(updatedItems));
+      setIsPreviewOpen(true);
       setAddedToCart(true);
-      setTimeout(() => {
-        setSuccessMessage("");
-      }, 2000);
+      refreshCartCount();
       return;
     }
 
@@ -197,15 +219,133 @@ function Product() {
         throw new Error("Failed to add product to cart.");
       }
 
-      setSuccessMessage(
-        `Added ${quantity} item${quantity > 1 ? "s" : ""} in size ${selectedSize} to cart.`,
+      const addResult = await response.json().catch(() => ({}));
+      const cartResponse = await fetch("http://localhost:3000/api/cart", {
+        credentials: "include",
+      });
+      const latestCart = cartResponse.ok ? await cartResponse.json() : [];
+
+      setPreviewItem(
+        Array.isArray(latestCart)
+          ? mapCartItemsForPreview(latestCart)
+          : [
+              {
+                id: product.id,
+                size: addResult.size || selectedSize || "Unspecified",
+                name: product.name,
+                image: getProductImageSrc(product),
+                price: Number(product.price || 0),
+                quantity: Number(addResult.quantity || quantity),
+              },
+            ],
       );
+      setCartSubtotal(
+        Array.isArray(latestCart)
+          ? getSubtotal(latestCart)
+          : Number(product.price || 0) * Number(quantity || 1),
+      );
+      setIsPreviewOpen(true);
       setAddedToCart(true);
-      setTimeout(() => {
-        setSuccessMessage("");
-      }, 2000);
+      refreshCartCount();
     } catch (err) {
       setError(err.message || "Unable to add product to cart.");
+    }
+  };
+
+  const handlePreviewRemoveItem = async (item) => {
+    if (!item?.id) return;
+
+    if (!isLoggedIn) {
+      const updatedItems = removeGuestCartItem(item.id, item.size);
+      const mappedItems = mapCartItemsForPreview(updatedItems);
+      setPreviewItem(mappedItems);
+      setCartSubtotal(getSubtotal(updatedItems));
+      setAddedToCart(mappedItems.some((cartItem) => Number(cartItem.id) === Number(product?.id)));
+      if (mappedItems.length === 0) {
+        setIsPreviewOpen(false);
+      }
+      refreshCartCount();
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/cart/${item.id}?size=${encodeURIComponent(item.size || "Unspecified")}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error("Unable to remove item from cart.");
+      }
+
+      const cartResponse = await fetch("http://localhost:3000/api/cart", {
+        credentials: "include",
+      });
+      const latestCart = cartResponse.ok ? await cartResponse.json() : [];
+      const mappedItems = mapCartItemsForPreview(latestCart);
+      setPreviewItem(mappedItems);
+      setCartSubtotal(getSubtotal(latestCart));
+      setAddedToCart(mappedItems.some((cartItem) => Number(cartItem.id) === Number(product?.id)));
+      if (mappedItems.length === 0) {
+        setIsPreviewOpen(false);
+      }
+      refreshCartCount();
+    } catch (err) {
+      setError(err.message || "Unable to remove item from cart.");
+    }
+  };
+
+  const handlePreviewQuantityChange = async (item, delta) => {
+    if (!item?.id || !delta) return;
+    const nextQuantity = Number(item.quantity || 0) + Number(delta);
+
+    if (nextQuantity < 1 || nextQuantity > MAX_CART_ITEM_QUANTITY) {
+      return;
+    }
+
+    if (!isLoggedIn) {
+      const updatedItems = updateGuestCartItemQuantity(
+        item.id,
+        item.size,
+        nextQuantity,
+      );
+      const mappedItems = mapCartItemsForPreview(updatedItems);
+      setPreviewItem(mappedItems);
+      setCartSubtotal(getSubtotal(updatedItems));
+      setAddedToCart(mappedItems.some((cartItem) => Number(cartItem.id) === Number(product?.id)));
+      refreshCartCount();
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:3000/api/cart/${item.id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          quantity: nextQuantity,
+          size: item.size || "Unspecified",
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Unable to update cart quantity.");
+      }
+
+      const cartResponse = await fetch("http://localhost:3000/api/cart", {
+        credentials: "include",
+      });
+      const latestCart = cartResponse.ok ? await cartResponse.json() : [];
+      const mappedItems = mapCartItemsForPreview(latestCart);
+      setPreviewItem(mappedItems);
+      setCartSubtotal(getSubtotal(latestCart));
+      setAddedToCart(mappedItems.some((cartItem) => Number(cartItem.id) === Number(product?.id)));
+      refreshCartCount();
+    } catch (err) {
+      setError(err.message || "Unable to update cart quantity.");
     }
   };
 
@@ -223,6 +363,15 @@ function Product() {
 
   return (
     <div className="product-page">
+      <CartPreview
+        isOpen={isPreviewOpen}
+        items={previewItem}
+        subtotal={cartSubtotal}
+        onClose={() => setIsPreviewOpen(false)}
+        onRemoveItem={handlePreviewRemoveItem}
+        onIncrementItem={(item) => handlePreviewQuantityChange(item, 1)}
+        onDecrementItem={(item) => handlePreviewQuantityChange(item, -1)}
+      />
       <button
         className="product-back-btn"
         type="button"
@@ -295,9 +444,6 @@ function Product() {
             {addedToCart ? "Added to Cart ✓" : "Add to Cart"}
           </button>
 
-          {successMessage && (
-            <p className="product-success-msg">{successMessage}</p>
-          )}
           {error && <p className="product-error-msg">{error}</p>}
         </div>
       </div>

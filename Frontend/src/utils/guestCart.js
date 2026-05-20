@@ -26,6 +26,9 @@ const getItemKey = (productId, size) =>
 
 const persist = (items) => {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+  if (typeof window !== "undefined") {
+    window.dispatchEvent(new CustomEvent("vesper-cart-updated"));
+  }
 };
 
 export const getGuestCartItems = () => {
@@ -83,9 +86,28 @@ export const removeGuestCartItem = (productId, size) => {
   return items;
 };
 
+export const updateGuestCartItemQuantity = (productId, size, quantity) => {
+  const itemKey = getItemKey(productId, size);
+  const safeQuantity = normalizeQuantity(quantity);
+  const items = getGuestCartItems().map((item) => {
+    if (getItemKey(item.id, item.size) !== itemKey) {
+      return item;
+    }
+
+    return {
+      ...item,
+      quantity: safeQuantity,
+    };
+  });
+
+  persist(items);
+  return items;
+};
+
 export const clearGuestCart = () => {
   if (typeof window === "undefined") return;
   localStorage.removeItem(STORAGE_KEY);
+  window.dispatchEvent(new CustomEvent("vesper-cart-updated"));
 };
 
 export const mergeGuestCartIntoServerCart = async () => {
