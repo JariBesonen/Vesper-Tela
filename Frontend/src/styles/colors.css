@@ -1,0 +1,29 @@
+/* Unified Color Palette */
+:root {
+  --color-primary: #111111; /* Dark Gray */
+  --color-secondary: #6b6b6b; /* Medium Gray */
+  --color-accent: #b91c1c; /* Red */
+  --color-background: #ffffff; /* White */
+  --color-border: #dedede; /* Light Gray */
+  --color-text: #3b3b3b; /* Text Gray */
+  --color-muted: #eceaea; /* Muted Gray */
+}
+
+/* Example Usage */
+body {
+  background-color: var(--color-background);
+  color: var(--color-text);
+}
+
+button {
+  background-color: var(--color-primary);
+  color: var(--color-background);
+}
+
+button:hover {
+  background-color: var(--color-accent);
+}
+
+.border {
+  border-color: var(--color-border);
+}
