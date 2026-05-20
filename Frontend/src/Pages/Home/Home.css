@@ -37,6 +37,9 @@ main {
   width: 100%;
   height: 60vh;
   background-color: white;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   margin-top: var(--nav-height);
   overflow: hidden;
 }
@@ -44,6 +47,7 @@ main {
 @media (min-width: 768px) {
   .hero-section {
     height: calc(100vh - var(--nav-height));
+    background-image: none !important;
   }
 }
 
@@ -56,6 +60,13 @@ main {
   z-index: 0;
   cursor: pointer;
   pointer-events: auto;
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .hero-video {
+    display: block;
+  }
 }
 
 .hero-video-overlay {
@@ -68,6 +79,13 @@ main {
   );
   z-index: 1;
   pointer-events: none;
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .hero-video-overlay {
+    display: block;
+  }
 }
 
 .hero-section-cta-wrapper {
@@ -363,19 +381,6 @@ main {
 
 /* MOBILE RESPONSIVE DESIGN */
 @media (max-width: 767px) {
-  .hero-video {
-    display: none;
-  }
-
-  .hero-video-overlay {
-    display: none;
-  }
-
-  .hero-section {
-    background-size: cover;
-    background-position: center;
-  }
-
   .hero-section-cta-wrapper {
     left: 50%;
     bottom: 1.5rem;
