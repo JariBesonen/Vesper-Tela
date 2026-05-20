@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import { BsEye, BsEyeSlash } from "react-icons/bs";
 import "./Register.css";
 
 function Register() {
@@ -9,6 +11,16 @@ function Register() {
     password: "",
     confirmPassword: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [toast, setToast] = useState(null);
+
+  const showToast = (message, type = "info") => {
+    setToast({ message, type });
+    setTimeout(() => {
+      setToast(null);
+    }, 1000);
+  };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -22,8 +34,13 @@ function Register() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
+    if (formData.password.length < 5) {
+      showToast("Password must be at least 5 characters long", "error");
+      return;
+    }
+
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match");
+      showToast("Passwords do not match", "error");
       return;
     }
 
@@ -45,21 +62,32 @@ function Register() {
         const data = await res.json();
 
         if (!res.ok) {
-          alert(data.error || "Registration failed");
+          showToast(data.error || "Registration failed", "error");
           return;
         }
 
-        alert("Account created. You are now logged in.");
-        window.location.href = "/";
+        showToast("Account created. You are now logged in.", "success");
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 1000);
       } catch (err) {
         console.error("Registration error:", err);
-        alert("Registration failed");
+        showToast("Registration failed", "error");
       }
     })();
   };
 
   return (
     <div className="register-page">
+      {toast && (
+        <div
+          className={`auth-toast ${toast.type}`}
+          role="status"
+          aria-live="polite"
+        >
+          {toast.message}
+        </div>
+      )}
       <form className="register-form" onSubmit={handleSubmit}>
         <h2>Create Account</h2>
 
@@ -90,25 +118,67 @@ function Register() {
           required
         />
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={formData.password}
-          onChange={handleChange}
-          required
-        />
+        <div className="password-field">
+          <input
+            type={showPassword ? "text" : "password"}
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleChange}
+            minLength={5}
+            required
+          />
+          <button
+            type="button"
+            className="password-toggle"
+            onClick={() => setShowPassword((prev) => !prev)}
+            aria-label={showPassword ? "Hide password" : "Show password"}
+            aria-pressed={showPassword}
+          >
+            {showPassword ? (
+              <BsEyeSlash aria-hidden="true" />
+            ) : (
+              <BsEye aria-hidden="true" />
+            )}
+          </button>
+        </div>
 
-        <input
-          type="password"
-          name="confirmPassword"
-          placeholder="Confirm Password"
-          value={formData.confirmPassword}
-          onChange={handleChange}
-          required
-        />
+        <div className="password-field">
+          <input
+            type={showConfirmPassword ? "text" : "password"}
+            name="confirmPassword"
+            placeholder="Confirm Password"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            minLength={5}
+            required
+          />
+          <button
+            type="button"
+            className="password-toggle"
+            onClick={() => setShowConfirmPassword((prev) => !prev)}
+            aria-label={
+              showConfirmPassword
+                ? "Hide confirm password"
+                : "Show confirm password"
+            }
+            aria-pressed={showConfirmPassword}
+          >
+            {showConfirmPassword ? (
+              <BsEyeSlash aria-hidden="true" />
+            ) : (
+              <BsEye aria-hidden="true" />
+            )}
+          </button>
+        </div>
 
-        <button type="submit">Register</button>
+        <p className="register-login-link">
+          Already have an account? <Link to="/login">Login</Link>
+        </p>
+
+        <button type="submit" className="auth-submit">
+          Register
+        </button>
       </form>
     </div>
   );

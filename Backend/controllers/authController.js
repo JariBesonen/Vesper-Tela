@@ -63,6 +63,12 @@ exports.register = async (req, res) => {
     return res.status(400).json({ error: "Missing required fields" });
   }
 
+  if (String(password).length < 5) {
+    return res
+      .status(400)
+      .json({ error: "Password must be at least 5 characters long" });
+  }
+
   try {
     const existing = await authModel.findByEmail(email);
 
