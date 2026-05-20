@@ -1,7 +1,7 @@
 import "./Home.css";
 import { Link, useNavigate } from "react-router-dom";
 import heroVideo from "../../assets/productImgs/heroVideo.mp4";
-import heroImageMobile from "../../assets/productImgs/heroImageMobile.jpg";
+import heroImageMobile from "../../assets/productImgs/vesperTelaWomanModel.png";
 import menSectionBackground from "../../assets/productImgs/heropageMenCTA.png";
 import womenShoesCtaImage from "../../assets/productImgs/womansCoffeeHeels.png";
 import womenShirtsCtaImage from "../../assets/productImgs/womansBeigeLongSleeveShirt.png";
@@ -15,7 +15,7 @@ function Home() {
 
   return (
     <main>
-      <section 
+      <section
         className="hero-section"
         style={{ backgroundImage: `url(${heroImageMobile})` }}
       >
