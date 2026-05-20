@@ -52,7 +52,7 @@ function Home() {
           className="woman-product-promo"
           style={{ backgroundImage: `url(${womenShoesCtaImage})` }}
         >
-          <span className="woman-promo-label">Women Shoes</span>
+          <span className="woman-promo-label">Women's Shoes</span>
           <span className="woman-promo-btn">SHOP SHOES</span>
         </Link>
         <Link
@@ -60,7 +60,7 @@ function Home() {
           className="woman-product-promo"
           style={{ backgroundImage: `url(${womenShirtsCtaImage})` }}
         >
-          <span className="woman-promo-label">Women Shirts</span>
+          <span className="woman-promo-label">Women's Shirts</span>
           <span className="woman-promo-btn">SHOP SHIRTS</span>
         </Link>
         <Link
@@ -68,7 +68,7 @@ function Home() {
           className="woman-product-promo"
           style={{ backgroundImage: `url(${womenPantsCtaImage})` }}
         >
-          <span className="woman-promo-label">Women Pants</span>
+          <span className="woman-promo-label">Women's Pants</span>
           <span className="woman-promo-btn">SHOP PANTS</span>
         </Link>
       </section>
@@ -99,7 +99,7 @@ function Home() {
           className="mens-new-arrival-product-promo"
           style={{ backgroundImage: `url(${menShoesCtaImage})` }}
         >
-          <span className="mens-new-arrival-label">Men Shoes</span>
+          <span className="mens-new-arrival-label">Men's Shoes</span>
           <span className="mens-new-arrival-btn">SHOP SHOES</span>
         </Link>
         <Link
@@ -108,7 +108,7 @@ function Home() {
           className="mens-new-arrival-product-promo"
           style={{ backgroundImage: `url(${menShirtsCtaImage})` }}
         >
-          <span className="mens-new-arrival-label">Men Shirts</span>
+          <span className="mens-new-arrival-label">Men's Shirts</span>
           <span className="mens-new-arrival-btn">SHOP SHIRTS</span>
         </Link>
         <Link
@@ -117,7 +117,7 @@ function Home() {
           className="mens-new-arrival-product-promo"
           style={{ backgroundImage: `url(${menPantsCtaImage})` }}
         >
-          <span className="mens-new-arrival-label">Men Pants</span>
+          <span className="mens-new-arrival-label">Men's Pants</span>
           <span className="mens-new-arrival-btn">SHOP PANTS</span>
         </Link>
       </section>
