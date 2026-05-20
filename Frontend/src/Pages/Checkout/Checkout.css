@@ -1,9 +1,9 @@
 .checkout-page {
-  padding: 40px 20px;
-  min-height: calc(100vh - 200px);
+  padding: calc(var(--nav-height) + 32px + 2.5rem) 20px 40px;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
 }
 
 .checkout-container {
@@ -12,6 +12,7 @@
   background: #ffffff;
   border-radius: 12px;
   padding: 32px;
+  transform: translateY(-1.5rem);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
@@ -151,7 +152,7 @@
   }
 
   .checkout-page {
-    padding: 20px 16px;
+    padding: calc(var(--nav-height) + 20px + 2.5rem) 16px 20px;
   }
 
   .checkout-container h2 {
@@ -200,7 +201,7 @@
 
 @media (max-width: 480px) {
   .checkout-page {
-    padding: 10px 8px;
+    padding: calc(var(--nav-height) + 16px + 2.5rem) 8px 10px;
   }
 
   .checkout-container {
@@ -254,7 +255,7 @@
 
 @media (max-width: 350px) {
   .checkout-page {
-    padding: 5px 4px;
+    padding: calc(var(--nav-height) + 12px + 2.5rem) 4px 5px;
   }
 
   .checkout-container {
