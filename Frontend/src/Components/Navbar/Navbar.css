@@ -108,6 +108,15 @@ nav ul li a:hover,
   stroke-linejoin: round;
 }
 
+/* Tablet - logged in state has too many items, reduce gap */
+@media (max-width: 900px) {
+  .ul-left,
+  .ul-right {
+    gap: clamp(0.5rem, 1.1vw, 1rem);
+    font-size: clamp(0.6rem, 0.9vw, 0.7rem);
+  }
+}
+
 /* Mobile responsive */
 @media (max-width: 768px) {
   nav {
