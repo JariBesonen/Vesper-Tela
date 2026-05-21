@@ -3,8 +3,11 @@
   padding: 0;
   background: transparent;
   border: none;
-  font-size: 0.7rem;
-  letter-spacing: 0.12em;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
   color: var(--color-primary);
   cursor: pointer;
   white-space: nowrap;

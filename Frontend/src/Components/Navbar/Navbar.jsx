@@ -63,20 +63,22 @@ function Navbar() {
             {cartCount > 0 && <span className="cart-count-badge">{cartCount}</span>}
           </a>
         </li>
-        {isLoggedIn && (
-          <>
-            <li>
-              <a href="/saved" className="nav-link">
-                Saved
-              </a>
-            </li>
-            <li>
-              <a href="/orders" className="nav-link">
-                Orders
-              </a>
-            </li>
-          </>
-        )}
+        <li>
+          <a
+            href={isLoggedIn ? "/saved" : "/login"}
+            className="nav-link"
+          >
+            Saved
+          </a>
+        </li>
+        <li>
+          <a
+            href={isLoggedIn ? "/orders" : "/login"}
+            className="nav-link"
+          >
+            Orders
+          </a>
+        </li>
         {isLoggedIn ? (
           <li>
             <Logout onLogout={() => setIsLoggedIn(false)} />

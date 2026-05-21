@@ -30,6 +30,7 @@ import Navbar from "./Components/Navbar/Navbar.jsx";
 import Search from "./Components/Search/Search.jsx";
 import { AuthProvider } from "./contexts/AuthContext.jsx";
 import "./Global.css";
+import "./styles/colors.css";
 function App() {
   return (
     <Router>

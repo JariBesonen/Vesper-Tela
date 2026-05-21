@@ -26,13 +26,17 @@ const allowedOrigins = [
   //   "https://www.thepalewitch.com",
 ];
 
+const localhostOriginRegex = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/;
+
 const corsOptions = {
   origin: (origin, callback) => {
     // Allow requests with no origin (Postman, curl, server-to-server)
     if (!origin) return callback(null, true);
 
     const isAllowed =
-      allowedOrigins.includes(origin) || origin.endsWith(".vercel.app");
+      allowedOrigins.includes(origin) ||
+      localhostOriginRegex.test(origin) ||
+      origin.endsWith(".vercel.app");
 
     if (isAllowed) return callback(null, true);
 
