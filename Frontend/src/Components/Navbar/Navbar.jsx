@@ -60,22 +60,18 @@ function Navbar() {
         <li>
           <a href="/cart" className="nav-link">
             Cart
-            {cartCount > 0 && <span className="cart-count-badge">{cartCount}</span>}
+            {cartCount > 0 && (
+              <span className="cart-count-badge">{cartCount}</span>
+            )}
           </a>
         </li>
         <li>
-          <a
-            href={isLoggedIn ? "/saved" : "/login"}
-            className="nav-link"
-          >
+          <a href={isLoggedIn ? "/saved" : "/login"} className="nav-link">
             Saved
           </a>
         </li>
         <li>
-          <a
-            href={isLoggedIn ? "/orders" : "/login"}
-            className="nav-link"
-          >
+          <a href={isLoggedIn ? "/orders" : "/login"} className="nav-link">
             Orders
           </a>
         </li>
