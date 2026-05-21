@@ -22,16 +22,9 @@ function Men() {
   const [error, setError] = useState(null);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [loginModalMessage, setLoginModalMessage] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState(initialCategory);
-
-  useEffect(() => {
-    if (initialCategory !== selectedCategory) {
-      setSelectedCategory(initialCategory);
-    }
-  }, [initialCategory, selectedCategory]);
 
   const handleCategoryChange = (nextCategory) => {
-    setSelectedCategory(nextCategory);
+    if (!validCategories.includes(nextCategory)) return;
     setSearchParams({ category: nextCategory });
   };
 
@@ -41,7 +34,7 @@ function Men() {
       try {
         // Fetch products
         const productResponse = await fetch(
-          `http://localhost:3000/api/products?gender=men&category=${selectedCategory}`,
+          `http://localhost:3000/api/products?gender=men&category=${initialCategory}`,
         );
         if (!productResponse.ok) {
           throw new Error(`Failed to load products: ${productResponse.status}`);
@@ -70,7 +63,7 @@ function Men() {
     }
 
     fetchData();
-  }, [selectedCategory]);
+  }, [initialCategory]);
 
   const formatPrice = (price) => {
     if (price === undefined || price === null || price === "") return "";
@@ -136,7 +129,7 @@ function Men() {
     <>
       <CategoryNav
         page="men"
-        selectedCategory={selectedCategory}
+        selectedCategory={initialCategory}
         onCategoryChange={handleCategoryChange}
       />
       <div className="mens-page">
