@@ -75,7 +75,8 @@
 .search-clear-btn,
 .search-icon-btn {
   border: none;
-  background: transparent;
+  background: transparent !important;
+  background-color: transparent !important;
   color: var(--color-primary);
   cursor: pointer;
   padding: 0;
@@ -90,8 +91,13 @@
 }
 
 .search-clear-btn:not(:disabled):hover,
-.search-icon-btn:not(:disabled):hover {
-  background-color: transparent;
+.search-icon-btn:not(:disabled):hover,
+.search-clear-btn:not(:disabled):focus,
+.search-icon-btn:not(:disabled):focus,
+.search-clear-btn:not(:disabled):active,
+.search-icon-btn:not(:disabled):active {
+  background: transparent !important;
+  background-color: transparent !important;
   color: var(--color-accent);
 }
 
