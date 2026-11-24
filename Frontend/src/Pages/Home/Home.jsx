@@ -1,7 +1,6 @@
 import "./Home.css";
 import { Link, useNavigate } from "react-router-dom";
-import heroVideo from "../../assets/productImgs/heroVideo.mp4";
-import heroImageMobile from "../../assets/productImgs/vesperTelaWomanModel.png";
+import heroImage from "../../assets/productImgs/Serene Ivory Elegance by the Fireplace.png";
 import menSectionBackground from "../../assets/productImgs/heropageMenCTA.png";
 import womenShoesCtaImage from "../../assets/productImgs/womansCoffeeHeels.png";
 import womenShirtsCtaImage from "../../assets/productImgs/womansBeigeLongSleeveShirt.png";
@@ -15,29 +14,13 @@ function Home() {
 
   return (
     <main>
-      <section
-        className="hero-section"
-        style={{ backgroundImage: `url(${heroImageMobile})` }}
-      >
-        <video
-          className="hero-video"
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="metadata"
-          onClick={() => navigate("/women")}
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") {
-              navigate("/women");
-            }
-          }}
-        >
-          <source src={heroVideo} type="video/mp4" />
-        </video>
-        <div className="hero-video-overlay" aria-hidden="true" />
+      <section className="hero-section">
+        <img
+          className="hero-image"
+          src={heroImage}
+          alt="Model wearing Vesper Tela fashion"
+        />
+        <div className="hero-image-overlay" aria-hidden="true" />
         <div className="hero-section-cta-wrapper">
           <span>Shop Women</span>
           <button type="button" onClick={() => navigate("/women")}>

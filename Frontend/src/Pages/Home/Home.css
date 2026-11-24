@@ -36,55 +36,33 @@ main {
   position: relative;
   width: 100%;
   height: 60vh;
-  background-color: white;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  min-height: 420px;
+  background-color: #e8e2d9;
   margin-top: var(--nav-height);
   overflow: hidden;
 }
 
-@media (min-width: 768px) {
-  .hero-section {
-    height: calc(100vh - var(--nav-height));
-    background-image: none !important;
-  }
-}
-
-.hero-video {
+.hero-image {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: 65% 40%;
   z-index: 0;
-  cursor: pointer;
-  pointer-events: auto;
-  display: none;
 }
 
-@media (min-width: 768px) {
-  .hero-video {
-    display: block;
-  }
-}
-
-.hero-video-overlay {
+.hero-image-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(255, 255, 255, 0.38),
-    rgba(255, 255, 255, 0.08)
-  );
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.42), transparent 45%);
   z-index: 1;
   pointer-events: none;
-  display: none;
 }
 
 @media (min-width: 768px) {
-  .hero-video-overlay {
-    display: block;
+  .hero-section {
+    height: calc(100vh - var(--nav-height));
   }
 }
 
