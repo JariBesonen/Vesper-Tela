@@ -14,6 +14,8 @@
 }
 
 .logout-btn:hover {
-  color: var(--color-secondary);
+  background: transparent;
+  background-color: transparent;
+  color: var(--color-accent);
   cursor: pointer;
 }
