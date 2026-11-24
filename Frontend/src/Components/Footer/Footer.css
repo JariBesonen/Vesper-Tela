@@ -71,9 +71,13 @@
   cursor: pointer;
 }
 
-.footer-links-group a:hover,
+.footer-links-group a:hover {
+  color: var(--color-accent);
+}
+
 .footer-search-btn:hover {
-  color: #727272;
+  background-color: transparent;
+  color: var(--color-accent);
 }
 
 .footer-bottom-row {

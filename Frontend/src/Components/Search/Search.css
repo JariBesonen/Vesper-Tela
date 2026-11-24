@@ -33,6 +33,11 @@
   align-self: flex-end;
 }
 
+.search-close-btn:hover {
+  background-color: transparent;
+  color: var(--color-accent);
+}
+
 .search-content {
   width: min(500px, 100%);
   margin: 4.15rem auto 0;
@@ -82,6 +87,12 @@
 .search-clear-btn:disabled {
   opacity: 0.45;
   cursor: not-allowed;
+}
+
+.search-clear-btn:not(:disabled):hover,
+.search-icon-btn:not(:disabled):hover {
+  background-color: transparent;
+  color: var(--color-accent);
 }
 
 .search-icon-btn {

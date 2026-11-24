@@ -50,6 +50,11 @@ h1 a:hover {
 
 .ul-right {
   justify-self: end;
+  min-width: 0;
+}
+
+.ul-right li:last-child {
+  flex-shrink: 0;
 }
 
 nav ul li a {
@@ -73,19 +78,26 @@ nav ul li a {
   line-height: 1;
 }
 
-nav ul li a:hover,
-.login-btn:hover,
-.search-btn:hover {
+nav ul li a:hover {
   cursor: pointer;
-  color: var(--color-secondary);
+  color: var(--color-accent);
+}
+
+.login-btn:hover {
+  cursor: pointer;
+  color: var(--color-accent);
+  background-color: transparent;
 }
 
 .login-btn {
   border: none;
   background: transparent;
   padding: 0;
+  color: var(--color-primary);
   font-size: 0.7rem;
   letter-spacing: 0.12em;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .search-btn {
@@ -96,6 +108,12 @@ nav ul li a:hover,
   align-items: center;
   justify-content: center;
   color: var(--color-primary);
+}
+
+.search-btn:hover {
+  cursor: pointer;
+  background-color: transparent;
+  color: var(--color-accent);
 }
 
 .search-icon {
@@ -148,6 +166,10 @@ nav ul li a:hover,
   .ul-right {
     grid-area: right;
     justify-content: flex-end;
+  }
+
+  .ul-right li:last-child {
+    margin-left: auto;
   }
 }
 

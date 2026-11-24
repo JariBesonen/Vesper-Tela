@@ -81,7 +81,7 @@ function Navbar() {
           </li>
         ) : (
           <li>
-            <button onClick={handleLogin} className="login-btn">
+            <button type="button" onClick={handleLogin} className="login-btn">
               LOGIN
             </button>
           </li>

@@ -140,6 +140,12 @@ main {
   pointer-events: auto;
 }
 
+.hero-section:hover .hero-section-cta-wrapper button,
+.hero-section-cta-wrapper button:hover {
+  background-color: var(--color-accent);
+  color: #ffffff;
+}
+
 @media (min-width: 768px) {
   .hero-section-cta-wrapper button {
     padding: 0.42rem 0.74rem;
@@ -241,6 +247,12 @@ main {
   cursor: pointer;
 }
 
+.woman-product-promo:hover .woman-promo-btn,
+.mens-new-arrival-product-promo:hover .mens-new-arrival-btn {
+  background-color: var(--color-accent);
+  color: #ffffff;
+}
+
 @media (min-width: 768px) {
   .woman-promo-btn {
     padding: 0.42rem 0.74rem;
@@ -335,6 +347,13 @@ main {
   align-items: center;
   justify-content: center;
   font-weight: 500;
+}
+
+.men-section:hover .men-shop-now-link,
+.men-shop-now-link:hover {
+  background-color: var(--color-accent);
+  border-color: var(--color-accent);
+  color: #ffffff;
 }
 
 @media (min-width: 768px) {

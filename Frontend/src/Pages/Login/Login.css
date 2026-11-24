@@ -117,7 +117,8 @@
 }
 
 .login-form .auth-submit:hover {
-  background: #ddd;
+  background: var(--color-accent);
+  color: #ffffff;
 }
 
 .login-register-link {
@@ -134,7 +135,7 @@
 }
 
 .login-register-link a:hover {
-  color: #e5e7eb;
+  color: var(--color-accent);
 }
 
 /* Responsive Design */
