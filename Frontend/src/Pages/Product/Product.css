@@ -90,6 +90,33 @@
   font-size: 1rem;
 }
 
+.product-control-group select {
+  background: #ffffff;
+  color: #0f172a;
+  cursor: pointer;
+  transition:
+    border-color 120ms ease,
+    color 120ms ease;
+}
+
+.product-control-group select:hover,
+.product-control-group select:focus {
+  background: #ffffff;
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+  outline: none;
+}
+
+.product-control-group select option {
+  background: #ffffff;
+  color: #0f172a;
+}
+
+.product-control-group select option:checked {
+  background: #ffffff;
+  color: var(--color-accent);
+}
+
 .quantity-row {
   display: grid;
   grid-template-columns: 44px minmax(70px, 120px) 44px;

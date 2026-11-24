@@ -24,12 +24,21 @@
 .cart-preview-close {
   align-self: flex-end;
   border: none;
-  background: transparent;
+  background: transparent !important;
+  background-color: transparent !important;
   color: #111111;
   font-size: 1rem;
   text-transform: uppercase;
   cursor: pointer;
   line-height: 1;
+}
+
+.cart-preview-close:hover,
+.cart-preview-close:focus,
+.cart-preview-close:active {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: var(--color-accent);
 }
 
 .cart-preview-heading {
@@ -120,8 +129,11 @@
 
 .cart-preview-remove-btn {
   margin-top: 0.2rem;
+  align-self: flex-start;
+  width: fit-content;
   border: none;
-  background: transparent;
+  background: transparent !important;
+  background-color: transparent !important;
   color: #6b1f1f;
   text-decoration: underline;
   font-size: 0.68rem;
@@ -130,6 +142,14 @@
   padding: 0;
   cursor: pointer;
   text-align: left;
+}
+
+.cart-preview-remove-btn:hover,
+.cart-preview-remove-btn:focus,
+.cart-preview-remove-btn:active {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: var(--color-accent);
 }
 
 .cart-preview-subtotal-row {
