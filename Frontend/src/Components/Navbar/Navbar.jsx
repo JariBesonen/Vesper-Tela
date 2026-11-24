@@ -1,7 +1,7 @@
 import "./Navbar.css";
 import Logout from "../Logout/Logout.jsx";
 import { useContext } from "react";
-import { AuthContext } from "../../contexts/AuthContext.jsx";
+import { AuthContext } from "../../contexts/AuthContextValue";
 function Navbar() {
   const { isLoggedIn, setIsLoggedIn, cartCount } = useContext(AuthContext);
 

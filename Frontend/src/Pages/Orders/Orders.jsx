@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../contexts/AuthContext.jsx";
+import { AuthContext } from "../../contexts/AuthContextValue";
 import "./Orders.css";
 
 function Orders() {

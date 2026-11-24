@@ -1,6 +1,6 @@
 import { useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { AuthContext } from "../../contexts/AuthContext.jsx";
+import { AuthContext } from "../../contexts/AuthContextValue";
 import {
   addGuestCartItem,
   getGuestCartItems,

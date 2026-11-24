@@ -5,6 +5,8 @@ import "lenis/dist/lenis.css";
 
 import App from "./App.jsx";
 
+// This file bootstraps the app; it does not export refreshable modules.
+// eslint-disable-next-line react-refresh/only-export-components
 function SmoothScrollApp() {
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");

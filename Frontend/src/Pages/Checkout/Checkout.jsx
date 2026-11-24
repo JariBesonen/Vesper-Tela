@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Checkout.css";
-import { AuthContext } from "../../contexts/AuthContext.jsx";
+import { AuthContext } from "../../contexts/AuthContextValue";
 import { clearGuestCart, getGuestCartItems } from "../../utils/guestCart.js";
 
 function Checkout() {

@@ -1,13 +1,5 @@
-import { createContext, useCallback, useEffect, useState } from "react";
-
-export const AuthContext = createContext({
-  isLoggedIn: false,
-  cartCount: 0,
-  loading: true,
-  setIsLoggedIn: () => {},
-  refreshSession: () => {},
-  refreshCartCount: () => {},
-});
+import { useCallback, useEffect, useState } from "react";
+import { AuthContext } from "./AuthContextValue";
 
 export function AuthProvider({ children }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -55,7 +47,7 @@ export function AuthProvider({ children }) {
       });
       const data = await res.json();
       setIsLoggedIn(Boolean(data && data.loggedIn));
-    } catch (err) {
+    } catch {
       setIsLoggedIn(false);
     } finally {
       setLoading(false);

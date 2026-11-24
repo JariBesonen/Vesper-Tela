@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import "./Woman.css";
 import CategoryNav from "../../Components/CategoryNav/CategoryNav.jsx";
 import LoginPromptModal from "../../Components/LoginPromptModal/LoginPromptModal.jsx";
-import { AuthContext } from "../../contexts/AuthContext.jsx";
+import { AuthContext } from "../../contexts/AuthContextValue";
 
 function Woman() {
   const validCategories = ["shirts", "pants", "shoes"];

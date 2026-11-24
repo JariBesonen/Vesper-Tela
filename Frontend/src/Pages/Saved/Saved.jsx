@@ -2,7 +2,7 @@ import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Saved.css";
 import LoginPromptModal from "../../Components/LoginPromptModal/LoginPromptModal.jsx";
-import { AuthContext } from "../../contexts/AuthContext.jsx";
+import { AuthContext } from "../../contexts/AuthContextValue";
 
 function Saved() {
   const navigate = useNavigate();
