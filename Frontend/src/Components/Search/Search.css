@@ -148,6 +148,12 @@
   min-height: 10rem;
 }
 
+.similar-product-item:hover,
+.similar-product-item:hover .similar-product-name,
+.similar-product-item:hover .similar-product-meta {
+  color: #ffffff;
+}
+
 .similar-product-image {
   width: 8.5rem;
   height: 8.5rem;
