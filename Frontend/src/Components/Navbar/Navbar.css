@@ -94,7 +94,7 @@ nav ul li a:hover {
   background: transparent;
   padding: 0;
   color: var(--color-primary);
-  font-size: 0.7rem;
+  font-size: inherit;
   letter-spacing: 0.12em;
   line-height: 1;
   white-space: nowrap;
